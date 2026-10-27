@@ -4,6 +4,10 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "tripwithdarma",
   "compatibility_date": "2025-10-01",
+  // Build before every `wrangler deploy`, so the deploy works whatever build command the dashboard has.
+  "build": {
+    "command": "npm run build"
+  },
   "assets": {
     "directory": "./dist",
     "html_handling": "auto-trailing-slash",
