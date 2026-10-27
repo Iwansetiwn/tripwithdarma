@@ -1,6 +1,16 @@
 {
-  "rating": "",
-  "reviewCount": "",
+  "rating": 5,
+  "reviewCount": 3,
   "widgetCode": "",
-  "reviews": []
+  "reviews": [
+    {
+      "author": "Eve T",
+      "date": "January 2026",
+      "rating": 5,
+      "text": "My heart is full after a truly beautiful day spent with this man. …",
+      "url": "https://www.tripadvisor.com/ShowUserReviews-g15244129-d27640245-r1047364590-Munduk_Local_Guide_Trekking-Panji_Anom_Sukasada_Buleleng_Regency_Bali.html",
+      "tour": "twin-lakes-jungle-hike-canoe-waterfall",
+      "featured": true
+    }
+  ]
 }
