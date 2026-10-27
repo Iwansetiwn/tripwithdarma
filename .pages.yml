@@ -114,7 +114,7 @@ content:
       - { name: metaTitle, label: Google title (optional), type: string }
       - { name: primaryKeyword, label: Main search keyword, type: string }
       - name: relatedTours
-        label: Related hikes (file names, e.g. twin-lakes-forest-trek)
+        label: Related hikes (file names, e.g. twin-lakes-jungle-hike-canoe-waterfall)
         type: string
         list: true
       - { name: body, label: Article, type: rich-text }

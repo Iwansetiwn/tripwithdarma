@@ -19,7 +19,7 @@ const photos = (
 ).filter((p) => p !== undefined);
 ---
 {photos.length > 0 && (
-  <div class:list={['gallery', `gallery-${layout}`]} data-gallery>
+  <div class:list={['gallery', `gallery-${layout}`, { few: photos.length < 3 }]} data-gallery>
     <ul>
       {photos.map((p, i) => (
         <li>
@@ -72,6 +72,9 @@ const photos = (
   /* 3 columns with a 2×2 lead photo: 6 or 9 photos fill the grid exactly. */
   .gallery-grid ul { grid-template-columns: repeat(3, 1fr); }
   .gallery-grid li:first-child { grid-column: span 2; grid-row: span 2; }
+  /* One or two photos: equal columns, no lead photo. */
+  .gallery-grid.few ul { grid-template-columns: repeat(2, 1fr); }
+  .gallery-grid.few li:first-child { grid-column: auto; grid-row: auto; }
   .gallery-grid li:first-child :global(.photo) { height: 100%; }
   .gallery-grid li:first-child button { height: 100%; }
 

@@ -24,6 +24,7 @@ const faq = (await getFaq()).filter((q) => q.onHome);
 const reviewData = await getReviews();
 const hasReviews = reviewData.reviews.some((r) => r.featured) || Boolean(site.tripadvisorUrl);
 const h = site.home;
+const trailPhotos = h.gallery ?? [];
 const heroPhoto = Boolean(h.heroImage && (resolveImage(h.heroImage) || h.heroImage.startsWith('http')));
 const og = await ogImageUrl(h.heroImage);
 const schema = graph(businessSchema(site, guide, Astro.site!, og), personSchema(guide, Astro.site!), websiteSchema(site, Astro.site!));
@@ -148,7 +149,7 @@ const steps = [
     </div>
   </section>
 
-  {h.gallery.length > 0 && (
+  {trailPhotos.length > 0 && (
     <section class="section trail">
       <div class="container">
         <div class="section-head split">
@@ -157,7 +158,7 @@ const steps = [
           <p>Forest giants, canoes on Tamblingan and waterfalls at the end of the path. Tap a photo to see it bigger.</p>
           <a href="/tours/" class="text-link head-link">Find your hike <Icon name="arrow" size={18} /></a>
         </div>
-        <Gallery items={h.gallery} layout="strip" />
+        <Gallery items={trailPhotos} layout="strip" />
       </div>
     </section>
   )}

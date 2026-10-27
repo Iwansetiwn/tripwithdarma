@@ -8,8 +8,8 @@ primaryKeyword: best time to hike Twin Lakes Bali
 cover: /images/blog/misty-morning-on-the-lake.jpg
 coverAlt: Morning mist over the lake as hikers set off by canoe
 relatedTours:
-  - twin-lakes-forest-trek
-  - twin-lakes-and-waterfalls-day-hike
+  - twin-lakes-jungle-hike-canoe-waterfall
+  - munduk-waterfalls-trek
 ---
 
 The short answer: **you can hike the Twin Lakes all year, and the best time of day is always the morning.** The dry season (roughly April to October) gives the firmest trails, but the wet season has its own rewards: fewer people, greener forest and waterfalls at full power.

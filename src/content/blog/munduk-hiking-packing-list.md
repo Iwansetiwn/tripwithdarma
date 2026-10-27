@@ -9,7 +9,7 @@ cover: /images/blog/hiker-with-daypack.jpg
 coverAlt: A hiker with a small daypack walking a forest path
 relatedTours:
   - munduk-waterfalls-trek
-  - twin-lakes-forest-trek
+  - twin-lakes-jungle-hike-canoe-waterfall
 ---
 
 Hiking in Munduk is different from the beach. The highlands are cooler, the forest trails can be muddy, and some routes pass through temples where you need to cover up. Here's what to bring so you can enjoy the walk instead of worrying about your feet.

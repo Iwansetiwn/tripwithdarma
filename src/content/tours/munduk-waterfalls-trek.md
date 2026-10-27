@@ -1,54 +1,57 @@
 ---
 # DRAFT CONTENT: Ketut to confirm which waterfalls, duration, price, inclusions and pickup before launch.
-title: Munduk Waterfalls Trek
-shortTitle: Munduk Waterfalls Trek
+title: Munduk Waterfall Trekking
+shortTitle: Munduk Waterfall Trekking
 order: 2
 featured: true
 draft: false
-metaTitle: Munduk Waterfall Tour | Private Waterfall Trek with a Local Guide
-metaDescription: Hike to Munduk's waterfalls through clove and coffee gardens with Ketut, a local guide in North Bali. Private group, swim stops, clear prices. Book on WhatsApp.
-primaryKeyword: Munduk waterfall tour
-summary: Follow village paths through clove, coffee and cacao gardens to Munduk's waterfalls, with time to swim.
-duration: About 3 hours
-durationHours: 3
+metaTitle: Munduk Waterfall Trekking | Private Waterfall Hike with a Local Guide
+metaDescription: Trek between Munduk's waterfalls with Ketut, a local guide in North Bali. Melanting, Munduk and Golden Valley falls, clove and coffee gardens and swim stops. Book on WhatsApp.
+primaryKeyword: Munduk waterfall trekking
+summary: Walk the jungle valleys below Munduk village from waterfall to waterfall, through clove and coffee gardens, with time to swim.
+duration: About 4 hours
+durationHours: 4
 distanceKm:
 elevationGainM:
 highestPointM:
-difficulty: Easy
+difficulty: Moderate
 price:
 priceCurrency: IDR
 priceUnit: per group
 groupSize: Private, 1–6 people
-startTime: "08:30"
+startTime: "08:00"
 meetingPoint: Munduk village (confirmed on WhatsApp)
 pickup: Pickup from hotels in Munduk can be arranged. Ask on WhatsApp.
 highlights:
-  - Several of Munduk's waterfalls in one walk
-  - Clove, coffee and cacao gardens along the way
+  - Several of Munduk's waterfalls linked on foot
+  - Melanting, Munduk (Red Coral) and Golden Valley falls
+  - Clove, coffee and cacao gardens between the falls
   - Swim stops when the water is calm
-  - Village paths most visitors never see
 itinerary:
-  - time: "08:30"
+  - time: "08:00"
     title: Meet in Munduk
-    text: Short briefing. Ketut explains the route and the waterfalls you'll visit.
-  - time: "08:45"
+    text: Short briefing. Ketut explains the route and the waterfalls you'll visit, starting with the longest walk while it's still cool.
+  - time: "08:15"
     title: Through the gardens
-    text: Walk village paths through clove, coffee and cacao plantations, with views over the valleys.
-  - time: "09:30"
-    title: First waterfall
-    text: Steps lead down to the first waterfall. Time for photos and a swim if conditions allow.
-  - time: "10:30"
-    title: More waterfalls
-    text: Continue along the river valley to the next falls.
-  - time: "11:30"
+    text: Village paths lead through clove, coffee and cacao plantations, with views over the river valleys.
+  - time: "09:00"
+    title: Melanting waterfall
+    text: Steps lead down to a tall fall in a narrow jungle gorge. Time for photos and a swim if conditions allow.
+  - time: "10:15"
+    title: Munduk (Red Coral) waterfall
+    text: A forest path follows the river to Munduk's best-known waterfall and its misty pool.
+  - time: "11:15"
+    title: Golden Valley waterfall
+    text: The last fall of the morning, with a café nearby for coffee from the local gardens.
+  - time: "12:00"
     title: Finish
-    text: Walk back to the village, or arrange a car for the return.
+    text: Walk back up to the village, or arrange a car for the return.
 included:
   - Private local guide
   - Drinking water
 notIncluded:
   - Waterfall entrance fees
-  - Food and drinks at warungs
+  - Food and drinks at cafés and warungs
   - Tips (optional)
 whatToBring:
   - Shoes with good grip
@@ -56,27 +59,21 @@ whatToBring:
   - Insect repellent and sunscreen
   - Cash for entrance fees
 elevationProfile: []
-cover: /images/tours/waterfalls-twin-falls.jpg
-coverAlt: Twin waterfall pouring down a fern-covered cliff in the forest near Munduk
+cover: /images/tours/munduk-waterfall-tall.jpg
+coverAlt: A tall waterfall falling into a rocky pool in the jungle near Munduk
 gallery:
-  - image: /images/tours/waterfalls-tall-falls.jpg
-    alt: A tall, narrow waterfall falling into a rocky pool
-  - image: /images/tours/waterfalls-jungle-falls.jpg
+  - image: /images/tours/munduk-waterfall-jungle.jpg
     alt: Waterfall framed by jungle on the Munduk trail
-  - image: /images/tours/waterfalls-river-falls.jpg
-    alt: Waterfall and river boulders deep in the valley
-  - image: /images/tours/waterfalls-wide-falls.jpg
-    alt: A wide waterfall spilling over a mossy cliff
-  - image: /images/tours/waterfalls-cascade.jpg
-    alt: A powerful cascade with swimmers in the pool below
-  - image: /images/tours/waterfalls-pool-swim.jpg
-    alt: Hikers swimming in a waterfall pool
+  - image: /images/tours/munduk-waterfall-river.jpg
+    alt: Waterfall and river boulders deep in the valley below Munduk
+  - image: /images/tours/munduk-waterfall-pool.jpg
+    alt: Waterfall and pool at the end of a forest path near Munduk
 ---
 
-Munduk sits on a ridge above deep, green river valleys, and the streams that run off the highlands drop over a series of waterfalls just below the village. This trek links several of them on foot, following the paths villagers use to reach their gardens.
+Munduk sits on a ridge above deep, green river valleys, and the streams running off the highlands drop over a chain of waterfalls just below the village. This trek links them on foot, following the paths villagers use to reach their gardens.
 
-Between the falls you'll walk through **clove, coffee and cacao plantations**. Ketut will show you how each crop is grown and dried, and point out the fruit trees and spices along the way.
+Between the falls you'll walk through **clove, coffee and cacao plantations**. Ketut shows you how each crop is grown and dried, and points out the fruit trees and spices along the way. Going early means cooler walking and quieter pools; afternoon rain is common in the highlands.
 
 ### Who is this hike for?
 
-Most people with normal fitness. There are many steps down to and back up from the waterfalls, and the paths can be slippery when wet, so take it slowly and wear shoes with good grip.
+Anyone with reasonable fitness. The walking itself is not long, but there are many steep steps down to each waterfall and back up again, and the paths are slippery when wet. Take it slowly and wear shoes with good grip.

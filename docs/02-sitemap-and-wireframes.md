@@ -7,9 +7,9 @@ Design direction: **B. Trail Map** (approved). Mobile-first; a sticky WhatsApp b
 ```
 /                                   Home                         "Munduk hiking guide"
 ├── /tours/                         Hikes overview               "Munduk trekking"
-│   ├── /tours/twin-lakes-forest-trek/            "Twin Lakes Bali hike"
-│   ├── /tours/munduk-waterfalls-trek/            "Munduk waterfall tour"
-│   └── /tours/twin-lakes-and-waterfalls-day-hike/ "private hiking guide North Bali"
+│   ├── /tours/twin-lakes-jungle-hike-canoe-waterfall/ "Twin Lakes Bali hike"
+│   ├── /tours/munduk-waterfalls-trek/            "Munduk waterfall trekking"
+│   └── /tours/sekumpul-ulun-danu-jatiluwih/      "Sekumpul Ulun Danu Jatiluwih tour"
 ├── /meet-your-guide/               About Ketut                  "Munduk local guide"
 ├── /reviews/                       Tripadvisor reviews          "Munduk hiking guide reviews"
 ├── /blog/                          Hiking guides                "Munduk hiking guides"

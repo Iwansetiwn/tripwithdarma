@@ -6,9 +6,9 @@
 |---|---|---|---|
 | `/` | Munduk hiking guide | Munduk trekking, Twin Lakes Bali, local guide Munduk | Munduk Hiking Guide \| Twin Lakes Treks with Ketut Darma |
 | `/tours/` | Munduk trekking | Munduk trekking tours, Munduk hikes | Munduk Trekking Tours \| Private Hikes with a Local Guide |
-| `/tours/twin-lakes-forest-trek/` | Twin Lakes Bali hike | Lake Buyan hike, Lake Tamblingan trekking, Pura Ulun Danu Tamblingan | Twin Lakes Bali Hike \| Lake Buyan to Tamblingan with a Local Guide |
-| `/tours/munduk-waterfalls-trek/` | Munduk waterfall tour | Munduk waterfall trekking, Munduk waterfalls | Munduk Waterfall Tour \| Private Waterfall Trek with a Local Guide |
-| `/tours/twin-lakes-and-waterfalls-day-hike/` | private hiking guide North Bali | North Bali hiking, full-day hike Munduk | Private Hiking Guide North Bali \| Twin Lakes & Waterfalls Day Hike |
+| `/tours/twin-lakes-jungle-hike-canoe-waterfall/` | Twin Lakes Bali hike | Lake Tamblingan trekking, Tamblingan canoe, Pura Ulun Danu Tamblingan, Banyumala waterfall | Twin Lakes Jungle Hike, Canoe & Waterfall \| Munduk, North Bali |
+| `/tours/munduk-waterfalls-trek/` | Munduk waterfall trekking | Munduk waterfall tour, Melanting waterfall, Golden Valley waterfall | Munduk Waterfall Trekking \| Private Waterfall Hike with a Local Guide |
+| `/tours/sekumpul-ulun-danu-jatiluwih/` | Sekumpul Ulun Danu Jatiluwih tour | Sekumpul waterfall tour, Ulun Danu Beratan, Jatiluwih rice terraces, North Bali day tour | Sekumpul Waterfall, Ulun Danu Beratan & Jatiluwih Day Tour \| North Bali |
 | `/meet-your-guide/` | Munduk local guide | Ketut Darma, private guide Munduk | Meet Ketut Darma \| Your Local Munduk Hiking Guide |
 | `/reviews/` | Munduk hiking guide reviews | Ketut Darma Tripadvisor | Reviews \| Munduk Hiking with Ketut Darma on Tripadvisor |
 | `/faq/` | Munduk hiking FAQ | what to wear hiking Bali, Munduk weather | Munduk Hiking FAQ \| Booking, Weather, Fitness & What to Wear |
