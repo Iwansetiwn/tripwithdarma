@@ -5,8 +5,8 @@ shortTitle: Twin Lakes Hike, Canoe & Waterfall
 order: 1
 featured: true
 draft: false
-metaTitle: Twin Lakes Jungle Hike, Canoe & Waterfall | Munduk, North Bali
-metaDescription: Private guided hike from the twin lakes viewpoint through the jungle to Ulun Danu Tamblingan temple, a wooden canoe across Lake Tamblingan and a swim at Banyumala twin waterfall.
+metaTitle: Twin Lakes Jungle Hike, Canoe & Waterfall | Munduk
+metaDescription: Private guided jungle hike to Ulun Danu Tamblingan temple, a wooden canoe across Lake Tamblingan and a swim at Banyumala twin waterfall in Munduk, Bali.
 primaryKeyword: Twin Lakes Bali hike
 summary: Jungle trail from the twin lakes viewpoint to the temple on Lake Tamblingan, a wooden canoe across the lake, then a swim at Banyumala twin waterfall.
 duration: About 5 hours

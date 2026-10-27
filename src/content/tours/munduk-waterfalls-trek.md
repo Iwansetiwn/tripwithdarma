@@ -5,8 +5,8 @@ shortTitle: Munduk Waterfall Trekking
 order: 2
 featured: true
 draft: false
-metaTitle: Munduk Waterfall Trekking | Private Waterfall Hike with a Local Guide
-metaDescription: Trek between Munduk's waterfalls with Ketut, a local guide in North Bali. Melanting, Munduk and Golden Valley falls, clove and coffee gardens and swim stops. Book on WhatsApp.
+metaTitle: Munduk Waterfall Trekking | Private Local Guide
+metaDescription: "Trek Munduk's waterfalls with Ketut, a local guide: Melanting, Munduk and Golden Valley falls, clove and coffee gardens and swim stops. Book on WhatsApp."
 primaryKeyword: Munduk waterfall trekking
 summary: Walk the jungle valleys below Munduk village from waterfall to waterfall, through clove and coffee gardens, with time to swim.
 duration: About 4 hours

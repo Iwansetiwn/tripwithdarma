@@ -5,8 +5,8 @@ shortTitle: Sekumpul, Ulun Danu & Jatiluwih
 order: 3
 featured: true
 draft: false
-metaTitle: Sekumpul Waterfall, Ulun Danu Beratan & Jatiluwih Day Tour | North Bali
-metaDescription: Private full-day tour from Munduk with a local guide. Hike down to Sekumpul waterfall, visit Ulun Danu Beratan temple on Lake Bratan and walk the Jatiluwih rice terraces.
+metaTitle: Sekumpul, Ulun Danu Beratan & Jatiluwih Day Tour
+metaDescription: "Private day tour from Munduk: hike down to Sekumpul waterfall, visit Ulun Danu Beratan temple on Lake Bratan and walk the Jatiluwih rice terraces."
 primaryKeyword: Sekumpul Ulun Danu Jatiluwih tour
 summary: "A full day across North Bali's highlights: the hike down to Sekumpul waterfall, the lake temple of Ulun Danu Beratan and the Jatiluwih rice terraces."
 duration: Full day, about 9 hours
