@@ -4,8 +4,8 @@ description: "What the forest trail between Lake Buyan and Lake Tamblingan is re
 date: 2026-11-01
 draft: true
 primaryKeyword: Twin Lakes Bali hike difficulty
-cover:
-coverAlt:
+cover: /images/blog/roots-on-the-forest-trail.jpg
+coverAlt: Hikers on a root-covered forest trail
 relatedTours: []
 ---
 

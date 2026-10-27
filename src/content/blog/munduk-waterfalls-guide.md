@@ -4,8 +4,8 @@ description: "Which waterfalls are near Munduk, how they connect on foot, entran
 date: 2026-11-01
 draft: true
 primaryKeyword: Munduk waterfalls
-cover:
-coverAlt:
+cover: /images/blog/munduk-waterfall.jpg
+coverAlt: A tall waterfall near Munduk falling into a rocky pool
 relatedTours: []
 ---
 

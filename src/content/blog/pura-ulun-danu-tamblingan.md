@@ -4,8 +4,8 @@ description: "The lakeside temple at Tamblingan: history, what you'll see, templ
 date: 2026-11-01
 draft: true
 primaryKeyword: Pura Ulun Danu Tamblingan
-cover:
-coverAlt:
+cover: /images/blog/pura-ulun-danu-tamblingan-from-canoe.jpg
+coverAlt: The tiered shrines of Pura Ulun Danu Tamblingan seen from a canoe
 relatedTours: []
 ---
 

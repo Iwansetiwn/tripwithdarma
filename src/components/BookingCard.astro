@@ -20,7 +20,9 @@ const rows = [
 ---
 <aside class="booking" aria-labelledby="book-title">
   <p class="price">
-    {price ? <><strong>{price}</strong> <span>{d.priceUnit}</span></> : <strong>Price on WhatsApp</strong>}
+    <span class="lbl">Private hike</span>
+    <strong>{price ?? 'Price on request'}</strong>
+    <span>{price ? d.priceUnit : 'Ketut confirms the price for your group on WhatsApp.'}</span>
   </p>
   <dl>
     {rows.filter((r) => r.value).map((r) => (
@@ -30,10 +32,14 @@ const rows = [
   {d.pickup && <p class="pickup">{d.pickup}</p>}
   <h2 id="book-title">Book this hike</h2>
   <div class="form" data-booking data-tour={d.title} data-number={(site.whatsapp ?? '').replace(/\D/g, '')}>
-    <label for="book-date">Date</label>
-    <input id="book-date" type="date" name="date" />
-    <label for="book-people">People</label>
-    <input id="book-people" type="number" name="people" min="1" max="20" inputmode="numeric" placeholder="2" />
+    <div>
+      <label for="book-date">Date</label>
+      <input id="book-date" type="date" name="date" />
+    </div>
+    <div>
+      <label for="book-people">People</label>
+      <input id="book-people" type="number" name="people" min="1" max="20" inputmode="numeric" placeholder="2" />
+    </div>
     <WhatsAppButton placement="tour-booking" tour={d.title} message={bookingMessage(d.title)} label="Book on WhatsApp" class="book-btn" />
     <p class="hint">Opens WhatsApp with your date and group size filled in. No payment online.</p>
   </div>
@@ -59,20 +65,28 @@ const rows = [
   }
 </script>
 <style>
-  .booking { background: var(--paper); border: 1px solid var(--line); border-top: 6px solid var(--marker); border-radius: 8px; padding: 22px; display: grid; gap: 16px; }
-  .price strong { font: 700 2rem/1 var(--display); color: var(--canopy); }
-  .price span { color: var(--muted); }
-  dl { margin: 0; display: grid; gap: 0; }
-  dl div { display: grid; grid-template-columns: 140px 1fr; gap: 10px; padding: 9px 0; border-bottom: 1px solid var(--line); }
+  .booking { background: var(--paper); border: 1px solid var(--line); border-radius: 22px; box-shadow: var(--shadow-lift); padding: 24px; display: grid; gap: 18px; }
+  .price { display: grid; gap: 4px; padding-bottom: 4px; }
+  .lbl { font: 650 0.72rem/1 var(--body) !important; text-transform: uppercase; letter-spacing: 0.14em; color: var(--clay-ink) !important; }
+  .price strong { font: 600 1.7rem/1.15 var(--serif); color: var(--forest); }
+  .price span { color: var(--muted); font-size: 0.95rem; }
+  dl { margin: 0; display: grid; border-top: 1px solid var(--line); }
+  dl div { display: grid; grid-template-columns: 130px 1fr; gap: 10px; padding: 11px 0; border-bottom: 1px solid var(--line); }
   dt { display: flex; gap: 8px; align-items: center; color: var(--muted); font-size: var(--step--1); }
   dt :global(svg) { color: var(--lake); flex: none; }
-  dd { margin: 0; font-weight: 600; }
+  dd { margin: 0; font-weight: 600; font-size: 0.95rem; }
   .pickup { font-size: var(--step--1); color: var(--muted); }
-  h2 { font-size: 1.5rem; }
-  .form { display: grid; gap: 6px; }
-  label { font-weight: 600; font-size: var(--step--1); }
-  input { font: inherit; padding: 10px 12px; border: 1px solid #aab8ae; border-radius: 6px; background: var(--paper); color: var(--basalt); min-height: 46px; margin-bottom: 8px; width: 100%; }
-  .form :global(.book-btn) { width: 100%; margin-top: 4px; }
-  .hint { font-size: 0.8rem; color: var(--muted); }
+  h2 { font-size: 1.35rem; padding-top: 4px; }
+  .form { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 10px; }
+  .form > div { display: grid; gap: 6px; }
+  label { font-weight: 650; font-size: 0.85rem; color: var(--ink); }
+  input {
+    font: inherit; padding: 10px 12px; border: 1px solid var(--line-strong); border-radius: 12px; background: var(--bg);
+    color: var(--ink); min-height: 48px; width: 100%; transition: border-color 0.15s, background-color 0.15s;
+  }
+  input:hover { border-color: var(--moss); }
+  input:focus { outline: none; border-color: var(--forest); background: #fff; box-shadow: 0 0 0 3px rgb(31 61 48 / 0.12); }
+  .form :global(.book-btn) { grid-column: 1 / -1; width: 100%; margin-top: 10px; }
+  .hint { grid-column: 1 / -1; font-size: 0.82rem; color: var(--muted); text-align: center; }
   @media (max-width: 420px) { dl div { grid-template-columns: 1fr; gap: 2px; } }
 </style>

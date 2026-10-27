@@ -55,19 +55,21 @@ if (limit) list = list.slice(0, limit);
   {showAllLink && list.length > 0 && <a class="all" href="/reviews/">More reviews <Icon name="arrow" size={18} /></a>}
 </div>
 <style>
-  .reviews { display: grid; gap: 24px; }
+  .reviews { display: grid; gap: 28px; }
   .summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: var(--step-1); }
   .stars { display: inline-flex; gap: 2px; }
-  .stars :global(.on) { color: var(--marker); }
-  .stars :global(.off) { color: var(--line); }
-  .list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
-  figure { margin: 0; height: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 22px; display: grid; gap: 12px; align-content: start; }
-  .rtitle { font: 700 1.3rem/1.15 var(--display); text-transform: uppercase; color: var(--canopy); }
+  .stars :global(.on) { color: #d9932b; }
+  .stars :global(.off) { color: var(--line-strong); }
+  .list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+  figure { position: relative; margin: 0; height: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 20px; box-shadow: var(--shadow); padding: 28px 26px 24px; display: grid; gap: 14px; align-content: start; }
+  figure::before { content: '\201C'; position: absolute; right: 22px; top: 6px; font: 400 4.5rem/1 var(--serif); color: var(--clay-tint); }
+  .rtitle { font: 600 1.25rem/1.25 var(--serif); color: var(--forest); }
   blockquote { margin: 0; }
-  blockquote p { display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
-  figcaption { font-size: var(--step--1); color: var(--muted); }
-  figcaption strong { color: var(--basalt); }
-  .empty { background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 24px; display: grid; gap: 14px; justify-items: start; }
+  blockquote p { color: #3f4a43; display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
+  figcaption { font-size: var(--step--1); color: var(--muted); padding-top: 14px; border-top: 1px solid var(--line); }
+  figcaption strong { color: var(--ink); }
+  .empty { background: var(--paper); border: 1px solid var(--line); border-radius: 20px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 14px; justify-items: start; }
+  .empty > p:first-child { font: 500 1.3rem/1.35 var(--serif); color: var(--forest); }
   .note { color: var(--muted); font-size: var(--step--1); }
-  .all { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
+  .all { display: inline-flex; gap: 6px; align-items: center; font-weight: 650; text-decoration: none; color: var(--forest); }
 </style>

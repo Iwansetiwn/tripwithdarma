@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Contours from '../components/Contours.astro';
+import Ridges from '../components/Ridges.astro';
 import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import Reviews from '../components/Reviews.astro';
@@ -29,9 +29,9 @@ const schema = graph(
   schema={schema}
 >
   <section class="page-hero">
-    <Contours opacity={0.14} />
+    <Ridges />
     <div class="container inner">
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Meet your guide' }]} inverted />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Meet your guide' }]}/>
       <p class="eyebrow">Meet your guide</p>
       <h1>{guide.name}</h1>
       <p>{guide.role}</p>
@@ -39,10 +39,10 @@ const schema = graph(
   </section>
 
   <section class="section">
-    <div class="container about">
-      <div class="portrait">
-        <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} eager sizes="(max-width: 860px) 100vw, 440px" aspect="4 / 5" widths={[400, 640, 880]} label="Portrait of Ketut coming soon" />
-      </div>
+    <div class:list={['container about', { 'no-photo': !guide.photo }]}>
+      {guide.photo && <div class="portrait">
+        <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} eager sizes="(max-width: 860px) 100vw, 440px" aspect="4 / 5" widths={[400, 640, 880]} />
+      </div>}
       <div class="story">
         <p class="intro">{guide.shortIntro}</p>
         <div class="prose">{paragraphs.map((p) => <p>{p}</p>)}</div>
@@ -72,17 +72,20 @@ const schema = graph(
   </section>
 </Base>
 <style>
-  .about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: start; }
-  .portrait { position: sticky; top: 16px; }
-  .story { display: grid; gap: 24px; }
-  .intro { font-size: var(--step-2); line-height: 1.35; color: var(--canopy); font-weight: 600; max-width: 40ch; }
-  .facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
-  .facts div { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
-  dt { font-size: var(--step--1); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-  dd { margin: 4px 0 0; font: 700 1.3rem/1.2 var(--display); text-transform: uppercase; color: var(--canopy); }
-  .promises { list-style: none; display: grid; gap: 10px; }
-  .promises li { display: flex; gap: 10px; align-items: flex-start; }
-  .promises :global(svg) { color: var(--lake); margin-top: 3px; flex: none; }
+  .about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 88px); align-items: start; }
+  .about.no-photo { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+  .portrait { position: sticky; top: calc(var(--header-h) + 24px); }
+  .portrait :global(.photo) { border-radius: 24px; box-shadow: var(--shadow-lift); object-position: 50% 90%; }
+  .story { display: grid; gap: 28px; }
+  .intro { font: 450 var(--step-2)/1.4 var(--serif); color: var(--forest); max-width: 38ch; }
+  .prose { font-size: 1.1rem; color: #3f4a43; }
+  .facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 12px; }
+  .facts div { background: var(--paper); border: 1px solid var(--line); border-radius: 16px; padding: 16px 18px; }
+  dt { font: 650 0.72rem/1 var(--body); color: var(--muted); text-transform: uppercase; letter-spacing: 0.14em; }
+  dd { margin: 8px 0 0; font: 560 1.25rem/1.2 var(--serif); color: var(--forest); }
+  .promises { list-style: none; display: grid; gap: 12px; padding: 22px 24px; background: var(--sand); border-radius: 18px; }
+  .promises li { display: flex; gap: 12px; align-items: flex-start; font-weight: 550; }
+  .promises :global(svg) { color: var(--clay); margin-top: 3px; flex: none; }
   .band { background: var(--paper); border-block: 1px solid var(--line); }
   @media (max-width: 860px) { .about { grid-template-columns: 1fr; } .portrait { position: static; max-width: 460px; } }
 </style>

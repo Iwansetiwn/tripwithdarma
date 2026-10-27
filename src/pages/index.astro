@@ -1,7 +1,8 @@
 ---
 import Base from '../layouts/Base.astro';
 import Photo from '../components/Photo.astro';
-import Contours from '../components/Contours.astro';
+import Gallery from '../components/Gallery.astro';
+import Ridges from '../components/Ridges.astro';
 import TourCard from '../components/TourCard.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import Reviews from '../components/Reviews.astro';
@@ -9,32 +10,48 @@ import FaqList from '../components/FaqList.astro';
 import PostCard from '../components/PostCard.astro';
 import AreaMap from '../components/AreaMap.astro';
 import Icon from '../components/Icon.astro';
-import { getSite, getGuide, getTours, getPosts, getFaq, getReviews } from '../lib/site';
+import { getSite, getGuide, getTours, getPosts, getFaq, getReviews, accent } from '../lib/site';
+import { resolveImage } from '../lib/images';
 import { businessSchema, personSchema, websiteSchema, graph } from '../lib/schema';
 import { ogImageUrl } from '../lib/og';
 
 const site = await getSite();
 const guide = await getGuide();
-const tours = (await getTours()).filter((t) => t.data.featured);
+const allTours = await getTours();
+const tours = allTours.filter((t) => t.data.featured);
 const posts = (await getPosts()).slice(0, 3);
 const faq = (await getFaq()).filter((q) => q.onHome);
 const reviewData = await getReviews();
+const hasReviews = reviewData.reviews.some((r) => r.featured) || Boolean(site.tripadvisorUrl);
 const h = site.home;
+const heroPhoto = Boolean(h.heroImage && (resolveImage(h.heroImage) || h.heroImage.startsWith('http')));
 const og = await ogImageUrl(h.heroImage);
 const schema = graph(businessSchema(site, guide, Astro.site!, og), personSchema(guide, Astro.site!), websiteSchema(site, Astro.site!));
-const icons = ['pin', 'users', 'check', 'chat'] as const;
+const promiseIcons = ['users', 'sun', 'chat'] as const;
+const firstName = guide.name.split(' ')[0];
+const steps = [
+  { title: 'Pick a hike', text: `Choose one of the routes above, or ask ${firstName} to adapt one for your group.` },
+  { title: 'Send your date on WhatsApp', text: `Tell ${firstName} your date and group size. He replies personally to confirm the price and start time.` },
+  { title: 'Meet at the trailhead', text: 'Meet at the trail or arrange pickup from your hotel in Munduk, then walk at your own pace.' },
+];
 ---
 <Base title={h.metaTitle} description={h.metaDescription} image={og} imageAlt={h.heroImageAlt} schema={schema}>
-  <section class="hero">
-    <Contours opacity={0.16} />
+  <section class:list={['hero', { 'has-photo on-dark': heroPhoto }]}>
+    {heroPhoto ? (
+      <div class="hero-bg">
+        <Photo src={h.heroImage} alt={h.heroImageAlt ?? ''} eager sizes="100vw" aspect="auto" widths={[640, 960, 1440, 1920, 2400]} />
+      </div>
+    ) : (
+      <Ridges />
+    )}
     <div class="container hero-grid">
       <div class="hero-text">
         <p class="eyebrow">Munduk · Lake Buyan · Lake Tamblingan</p>
-        <h1>{h.heroHeadline}</h1>
+        <h1 set:html={accent(h.heroHeadline)} />
         <p class="lead">{h.heroText}</p>
         <div class="hero-actions">
           <WhatsAppButton placement="hero" />
-          <a href="/tours/" class="btn btn-ghost">See the hikes</a>
+          <a href="#hikes" class="btn btn-ghost">See the hikes</a>
         </div>
         {(reviewData.rating || site.tripadvisorUrl) && (
           <p class="proof">
@@ -44,18 +61,45 @@ const icons = ['pin', 'users', 'check', 'chat'] as const;
           </p>
         )}
       </div>
-      <div class="hero-photo">
-        <Photo src={h.heroImage} alt={h.heroImageAlt ?? ''} eager sizes="(max-width: 860px) 100vw, 560px" aspect="4 / 5" widths={[480, 720, 960, 1120]} label="Hero photo coming soon" />
-      </div>
+
+      <aside class="hero-card" aria-labelledby="hero-card-title">
+        <p class="hc-title" id="hero-card-title">Choose your hike</p>
+        <ul>
+          {allTours.map((t) => (
+            <li>
+              <a href={`/tours/${t.id}/`}>
+                <span class="hc-name">{t.data.shortTitle ?? t.data.title}</span>
+                <span class="hc-meta">
+                  <span>{t.data.duration}</span>
+                  <span class={`level level-${t.data.difficulty.toLowerCase()}`}>{t.data.difficulty}</span>
+                </span>
+                <Icon name="arrow" size={20} class="hc-arrow" />
+              </a>
+            </li>
+          ))}
+        </ul>
+        <p class="hc-foot"><Icon name="users" size={18} /> Private hikes for your group only</p>
+      </aside>
     </div>
   </section>
 
-  <section class="section">
+  {guide.promises.length > 0 && (
+    <section class="promises on-dark" aria-label={`Hiking with ${firstName}`}>
+      <ul class="container">
+        {guide.promises.slice(0, 3).map((p, i) => (
+          <li><span class="p-icon"><Icon name={promiseIcons[i % promiseIcons.length]} size={20} /></span>{p}</li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="section" id="hikes">
     <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Hikes</p>
-        <h2>Choose your Munduk hike</h2>
-        <p>Every hike is private, with a local guide and a clear price. Pick one and send Ketut your date on WhatsApp.</p>
+      <div class="section-head split">
+        <p class="eyebrow">The hikes</p>
+        <h2>Choose your <em>Munduk</em> hike</h2>
+        <p>Every hike is private, with a local guide and a clear price. Pick one and send {firstName} your date on WhatsApp.</p>
+        <a href="/tours/" class="text-link head-link">Compare all hikes <Icon name="arrow" size={18} /></a>
       </div>
       <div class="grid-cards">
         {tours.map((t) => <TourCard tour={t} />)}
@@ -63,72 +107,122 @@ const icons = ['pin', 'users', 'check', 'chat'] as const;
     </div>
   </section>
 
-  <section class="section why">
+  <section class="section band-sand how">
     <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Why hike with Ketut</p>
-        <h2>A local guide who knows every trail</h2>
+      <div class="section-head center">
+        <p class="eyebrow">How booking works</p>
+        <h2>One message and <em>you're set</em></h2>
+        <p>No online payment and no booking forms. You talk directly with your guide.</p>
       </div>
-      <ul class="why-grid">
-        {h.whyChoose.map((item, i) => (
+      <ol class="steps">
+        {steps.map((s, i) => (
           <li>
-            <span class="why-icon"><Icon name={icons[i % icons.length]} size={26} /></span>
-            <h3>{item.title}</h3>
-            <p>{item.text}</p>
+            <span class="step-n" aria-hidden="true">{i + 1}</span>
+            <h3>{s.title}</h3>
+            <p>{s.text}</p>
           </li>
         ))}
-      </ul>
+      </ol>
+      <div class="how-cta"><WhatsAppButton placement="how-it-works" label={`Message ${firstName} on WhatsApp`} /></div>
     </div>
   </section>
 
   <section class="section">
-    <div class="container meet">
-      <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} sizes="(max-width: 860px) 100vw, 460px" aspect="4 / 5" widths={[400, 640, 920]} label="Portrait of Ketut coming soon" />
+    <div class="container why">
+      <div class="section-head why-head">
+        <p class="eyebrow">Why hike with {firstName}</p>
+        <h2>A local guide who knows <em>every trail</em></h2>
+        <p>Small, unhurried and personal. The kind of hike you remember for the people as much as the views.</p>
+      </div>
+      <ol class="why-list">
+        {h.whyChoose.map((item, i) => (
+          <li>
+            <span class="why-n" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+            <div>
+              <h3>{item.title}</h3>
+              <p>{item.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+
+  {h.gallery.length > 0 && (
+    <section class="section trail">
+      <div class="container">
+        <div class="section-head split">
+          <p class="eyebrow">From the trail</p>
+          <h2>Real hikes, <em>real guests</em></h2>
+          <p>Forest giants, canoes on Tamblingan and waterfalls at the end of the path. Tap a photo to see it bigger.</p>
+          <a href="/tours/" class="text-link head-link">Find your hike <Icon name="arrow" size={18} /></a>
+        </div>
+        <Gallery items={h.gallery} layout="strip" />
+      </div>
+    </section>
+  )}
+
+  <section class="section band-paper">
+    <div class:list={['container meet', { 'no-photo': !guide.photo }]}>
+      {guide.photo && (
+        <div class="portrait">
+          <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} sizes="(max-width: 860px) 100vw, 480px" aspect="4 / 5" widths={[400, 640, 960]} />
+          <p class="name-tag"><strong>{guide.name}</strong><span>{guide.role}</span></p>
+        </div>
+      )}
       <div class="meet-text">
         <p class="eyebrow">Meet your guide</p>
-        <h2>{guide.name}</h2>
+        <h2>Hello, I'm <em>{firstName}</em></h2>
         <p class="lead-dark">{guide.shortIntro}</p>
         <ul class="facts">
           {guide.yearsGuiding && <li><Icon name="badge" /> {guide.yearsGuiding}+ years guiding</li>}
-          {guide.languages.length > 0 && <li><Icon name="language" /> Speaks {guide.languages.join(', ')}</li>}
+          {guide.languages.length > 0 && <li><Icon name="language" /> Speaks {guide.languages.join(' and ')}</li>}
+          {guide.homeVillage && <li><Icon name="pin" /> From {guide.homeVillage}</li>}
           {guide.certifications.map((c) => <li><Icon name="check" /> {c}</li>)}
         </ul>
-        <a href="/meet-your-guide/" class="btn btn-outline">Read Ketut's story</a>
+        <div class="meet-actions">
+          <a href="/meet-your-guide/" class="btn btn-outline">Read {firstName}'s story</a>
+          <WhatsAppButton placement="meet" label="Say hello" variant="outline" class="btn-plain" />
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="section reviews-band">
-    <div class="container">
-      <div class="section-head">
-        <p class="eyebrow">Reviews</p>
-        <h2>What hikers say</h2>
+  {hasReviews && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head split">
+          <p class="eyebrow">Reviews</p>
+          <h2>What hikers say</h2>
+          <a href="/reviews/" class="text-link head-link">All reviews <Icon name="arrow" size={18} /></a>
+        </div>
+        <Reviews limit={3} showAllLink={false} />
       </div>
-      <Reviews limit={3} />
-    </div>
-  </section>
+    </section>
+  )}
 
-  <section class="section">
+  <section class:list={['section', { 'band-sand': !hasReviews }]}>
     <div class="container map-grid">
       <div class="section-head">
         <p class="eyebrow">Where we hike</p>
-        <h2>The Munduk highlands</h2>
+        <h2>The Munduk <em>highlands</em></h2>
         <p>Munduk sits at the edge of the old caldera in North Bali's highlands. Above the village lie two crater lakes, Buyan and Tamblingan, wrapped in forest. Below it, rivers drop through clove and coffee gardens over a chain of waterfalls.</p>
-        <a href="/contact/" class="more">Location &amp; how to get here <Icon name="arrow" size={18} /></a>
+        <a href="/contact/" class="text-link">Location &amp; how to get here <Icon name="arrow" size={18} /></a>
       </div>
-      <AreaMap />
+      <div class="map-card card"><AreaMap /></div>
     </div>
   </section>
 
   {faq.length > 0 && (
-    <section class="section faq-band">
-      <div class="container">
-        <div class="section-head">
+    <section class:list={['section', { 'band-paper': !hasReviews, 'band-sand': hasReviews }]}>
+      <div class="container faq-grid">
+        <div class="section-head faq-head">
           <p class="eyebrow">Good to know</p>
           <h2>Questions before you hike</h2>
+          <p>Something else on your mind? {firstName} is happy to answer on WhatsApp before you book.</p>
+          <a href="/faq/" class="text-link">See all questions <Icon name="arrow" size={18} /></a>
         </div>
         <FaqList items={faq} />
-        <p class="faq-more"><a href="/faq/">All questions <Icon name="arrow" size={18} /></a></p>
       </div>
     </section>
   )}
@@ -136,9 +230,10 @@ const icons = ['pin', 'users', 'check', 'chat'] as const;
   {posts.length > 0 && (
     <section class="section">
       <div class="container">
-        <div class="section-head">
-          <p class="eyebrow">Hiking guides</p>
+        <div class="section-head split">
+          <p class="eyebrow">Trip guides</p>
           <h2>Plan your Munduk trip</h2>
+          <a href="/blog/" class="text-link head-link">All guides <Icon name="arrow" size={18} /></a>
         </div>
         <div class="grid-cards">
           {posts.map((p) => <PostCard post={p} />)}
@@ -147,56 +242,158 @@ const icons = ['pin', 'users', 'check', 'chat'] as const;
     </section>
   )}
 
-  <section class="final-cta">
-    <Contours opacity={0.14} />
+  <div class="cta-edge" aria-hidden="true"><Ridges tone="dark" /></div>
+  <section class="final-cta on-dark">
     <div class="container final-inner">
-      <h2>Ready for the Twin Lakes?</h2>
-      <p>Send Ketut your date and group size. He'll reply personally on WhatsApp.</p>
-      <WhatsAppButton placement="final-cta" label="Message Ketut on WhatsApp" />
+      <p class="eyebrow">Ready when you are</p>
+      <h2>See the Twin Lakes <em>with {firstName}</em></h2>
+      <p>Send your date and group size. {firstName} replies personally on WhatsApp.</p>
+      <WhatsAppButton placement="final-cta" label={`Message ${firstName} on WhatsApp`} />
     </div>
   </section>
 </Base>
 <style>
-  .hero { position: relative; overflow: hidden; background: var(--canopy); color: var(--mist); }
-  .hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; padding-block: clamp(40px, 7vw, 88px); }
-  .hero-text { display: grid; gap: 20px; }
-  .hero h1 { color: #fff; }
-  .lead { font-size: var(--step-1); color: #d9e6dc; max-width: 54ch; }
-  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
-  .proof { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); color: #cfe0d5; }
-  .proof :global(svg) { color: var(--marker); }
-  .proof a { color: #fff; }
-  .hero-photo { max-width: 560px; justify-self: end; width: 100%; }
-  .hero-photo :global(.photo) { border-radius: 10px; box-shadow: 0 20px 40px rgb(0 0 0 / 0.25); }
+  /* Hero ---------------------------------------------------------------- */
+  .hero {
+    position: relative; overflow: hidden;
+    background: linear-gradient(180deg, #d9e3dd 0%, #ebe8dc 55%, #f3e6d3 100%);
+    padding-block: clamp(40px, 6vw, 88px) clamp(80px, 10vw, 140px);
+  }
+  .hero-grid {
+    position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
+    gap: clamp(32px, 5vw, 72px); align-items: start;
+  }
+  .hero-text { display: grid; gap: 22px; justify-items: start; padding-top: clamp(0px, 2vw, 24px); }
+  .hero h1 { max-width: 13ch; }
+  .lead { font-size: var(--step-1); color: #3f4a43; max-width: 50ch; line-height: 1.6; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+  .proof { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); color: var(--muted); }
+  .proof :global(svg) { color: #d9932b; }
 
-  .why { background: var(--paper); border-block: 1px solid var(--line); }
-  .why-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 28px; }
-  .why-grid li { display: grid; gap: 10px; align-content: start; }
-  .why-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 8px; background: var(--marker-soft); color: var(--marker); }
-  .why-grid h3 { font-size: 1.45rem; text-transform: uppercase; color: var(--canopy); }
-  .why-grid p { color: var(--muted); }
+  .hero-card {
+    background: rgb(255 253 248 / 0.92); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border: 1px solid rgb(255 255 255 / 0.7); border-radius: 20px; box-shadow: var(--shadow-lift);
+    padding: 22px; display: grid; gap: 6px; margin-top: clamp(0px, 4vw, 48px);
+  }
+  .hc-title { font: 650 0.78rem/1 var(--body); text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); padding: 4px 4px 10px; }
+  .hero-card ul { list-style: none; display: grid; }
+  .hero-card li + li { border-top: 1px solid var(--line); }
+  .hero-card a {
+    display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; align-items: center; padding: 14px 8px;
+    text-decoration: none; color: var(--ink); border-radius: 12px; transition: background-color 0.15s;
+  }
+  .hero-card a:hover { background: var(--bg); }
+  .hc-name { font: 560 1.18rem/1.2 var(--serif); color: var(--forest); }
+  .hc-meta { grid-column: 1; display: flex; flex-wrap: wrap; gap: 4px 14px; font-size: 0.9rem; color: var(--muted); }
+  .hero-card :global(.hc-arrow) { grid-column: 2; grid-row: 1 / span 2; color: var(--clay); transition: transform 0.2s; }
+  .hero-card a:hover :global(.hc-arrow) { transform: translateX(3px); }
+  .hc-foot { display: flex; align-items: center; gap: 8px; margin-top: 6px; padding: 12px 8px 2px; border-top: 1px solid var(--line); font-size: 0.9rem; color: var(--muted); }
+  .hc-foot :global(svg) { color: var(--lake); }
 
-  .meet { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); gap: 48px; align-items: center; }
-  .meet-text { display: grid; gap: 18px; justify-items: start; }
-  .lead-dark { font-size: var(--step-1); max-width: 56ch; }
-  .facts { list-style: none; display: grid; gap: 8px; }
-  .facts li { display: flex; align-items: center; gap: 10px; }
+  /* Hero with an uploaded photo */
+  .has-photo { padding-block: clamp(96px, 12vw, 160px) clamp(48px, 6vw, 88px); min-height: min(88vh, 820px); display: grid; align-items: end; background: var(--forest); }
+  .has-photo .hero-grid { align-items: end; }
+  .has-photo .hero-card { margin-top: 0; }
+  .hero-bg { position: absolute; inset: 0; }
+  .hero-bg :global(picture) { height: 100%; }
+  .hero-bg :global(.photo) { width: 100%; height: 100%; border-radius: 0; object-position: 50% 60%; }
+  .hero-bg::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgb(19 42 32 / 0.78) 0%, rgb(19 42 32 / 0.4) 50%, rgb(19 42 32 / 0.05) 100%), linear-gradient(0deg, rgb(31 61 48 / 0.95) 0%, rgb(31 61 48 / 0) 45%); }
+  .has-photo h1 { color: #fff; }
+  .has-photo h1 :global(em) { color: var(--clay-light); }
+  .has-photo .lead { color: #e2ebe4; text-shadow: 0 1px 12px rgb(0 0 0 / 0.25); }
+  .has-photo h1 { text-shadow: 0 2px 24px rgb(0 0 0 / 0.25); }
+  .has-photo .eyebrow { color: var(--clay-light); }
+  .has-photo .proof { color: #cfe0d5; }
+  .has-photo .proof a { color: #fff; }
+
+  /* Promise strip: continues the dark foreground of the hero scene */
+  .promises { background: #1f3d30; color: #e4ece6; }
+  .promises ul { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px 32px; padding-block: 22px 26px; }
+  .promises li { display: flex; align-items: center; gap: 12px; font-weight: 550; }
+  .p-icon { flex: none; width: 38px; height: 38px; border-radius: 50%; display: grid; place-items: center; background: rgb(255 255 255 / 0.08); color: var(--clay-light); }
+
+  /* Trail photo strip */
+  .trail { padding-bottom: clamp(48px, 7vw, 88px); }
+
+  /* How booking works */
+  .steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 40px); position: relative; counter-reset: s; }
+  .steps::before {
+    content: ''; position: absolute; top: 27px; left: 16%; right: 16%; border-top: 3px dotted var(--clay); opacity: 0.55;
+  }
+  .steps li { position: relative; display: grid; gap: 10px; align-content: start; justify-items: center; text-align: center; padding: 0 8px; }
+  .step-n {
+    width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center; margin-bottom: 8px;
+    background: var(--paper); border: 1px solid var(--line); box-shadow: var(--shadow);
+    font: 560 1.5rem/1 var(--serif); color: var(--clay-ink);
+  }
+  .steps h3 { font-size: 1.4rem; }
+  .steps p { color: var(--muted); max-width: 32ch; }
+  .how-cta { display: flex; justify-content: center; margin-top: clamp(32px, 4vw, 48px); }
+
+  /* Why */
+  .why { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 96px); align-items: start; }
+  .why-head { position: sticky; top: calc(var(--header-h) + 32px); margin-bottom: 0; }
+  .why-list { list-style: none; display: grid; }
+  .why-list li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; padding: 28px 0; border-top: 1px solid var(--line-strong); }
+  .why-list li:last-child { border-bottom: 1px solid var(--line-strong); }
+  .why-n { font: 400 2rem/1 var(--serif); font-style: italic; color: var(--clay); }
+  .why-list h3 { font-size: 1.45rem; margin-bottom: 8px; }
+  .why-list p { color: var(--muted); max-width: 54ch; }
+
+  /* Meet */
+  .meet { display: grid; grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr); gap: clamp(32px, 6vw, 88px); align-items: center; }
+  .meet.no-photo { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
+  .portrait { position: relative; }
+  .portrait :global(.photo) { border-radius: 24px; box-shadow: var(--shadow-lift); object-position: 50% 90%; }
+  .name-tag {
+    position: absolute; left: 20px; top: 20px; display: grid; gap: 2px; padding: 12px 16px;
+    background: rgb(255 253 248 / 0.94); border-radius: 14px; box-shadow: var(--shadow);
+  }
+  .name-tag strong { font: 600 1.15rem/1.1 var(--serif); color: var(--forest); }
+  .name-tag span { font-size: 0.85rem; color: var(--muted); }
+  .meet-text { display: grid; gap: 20px; justify-items: start; }
+  .lead-dark { font-size: var(--step-1); max-width: 54ch; color: #3f4a43; }
+  .facts { list-style: none; display: flex; flex-wrap: wrap; gap: 10px; }
+  .facts li { display: inline-flex; align-items: center; gap: 8px; padding: 8px 14px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); font-size: 0.95rem; font-weight: 550; }
   .facts :global(svg) { color: var(--lake); }
+  .meet-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .meet-actions :global(.btn-plain) { border-color: transparent; }
+  .meet-actions :global(.btn-plain:hover) { background: rgb(31 61 48 / 0.06); color: var(--forest); }
 
-  .reviews-band, .faq-band { background: var(--paper); border-block: 1px solid var(--line); }
-  .map-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 40px; align-items: center; }
-  .more, .faq-more a { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
-  .faq-more { margin-top: 20px; }
+  /* Map */
+  .map-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 72px); align-items: center; }
+  .map-grid .section-head { margin-bottom: 0; justify-items: start; }
+  .map-card { padding: 10px; overflow: hidden; }
 
-  .final-cta { position: relative; overflow: hidden; background: var(--canopy-deep); color: var(--mist); padding-block: clamp(56px, 9vw, 104px); }
-  .final-inner { position: relative; display: grid; gap: 18px; justify-items: center; text-align: center; }
-  .final-cta h2 { color: #fff; font-size: var(--step-4); }
-  .final-cta p { font-size: var(--step-1); color: #d9e6dc; }
+  /* FAQ */
+  .faq-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 5vw, 72px); align-items: start; }
+  .faq-head { margin-bottom: 0; justify-items: start; }
 
-  @media (max-width: 860px) {
-    .hero-grid, .meet, .map-grid { grid-template-columns: 1fr; }
-    .hero-photo { justify-self: stretch; max-width: none; }
-    .hero-photo :global(.photo) { aspect-ratio: 4 / 3 !important; }
-    .hero-photo:has(:global(.placeholder)) { display: none; }
+  /* Final CTA */
+  .cta-edge { position: relative; height: clamp(48px, 7vw, 110px); margin-top: clamp(24px, 4vw, 48px); }
+  .final-cta { position: relative; background: var(--forest-deep); color: #dfe8e1; padding-block: clamp(24px, 4vw, 48px) clamp(64px, 9vw, 112px); }
+  .final-inner { display: grid; gap: 18px; justify-items: center; text-align: center; }
+  .final-cta h2 { color: #fff; font-size: var(--step-4); max-width: 16ch; }
+  .final-cta h2 :global(em) { color: var(--clay-light); }
+  .final-cta p:not(.eyebrow) { font-size: var(--step-1); color: #c5d4c9; max-width: 46ch; }
+  .final-cta :global(.btn) { margin-top: 8px; }
+
+  @media (max-width: 960px) {
+    .hero-grid, .why, .meet, .map-grid, .faq-grid { grid-template-columns: 1fr; }
+    .hero-card { margin-top: 0; max-width: 560px; }
+    .why-head { position: static; }
+    .portrait { max-width: 480px; }
+  }
+  @media (max-width: 760px) {
+    .promises ul { grid-template-columns: 1fr; gap: 14px; }
+    .steps { grid-template-columns: 1fr; gap: 28px; }
+    .steps::before { top: 28px; bottom: 28px; left: 27px; right: auto; border-top: 0; border-left: 3px dotted var(--clay); }
+    .steps li { grid-template-columns: 56px 1fr; justify-items: start; text-align: left; column-gap: 16px; row-gap: 4px; padding: 0; }
+    .step-n { grid-row: 1 / span 2; margin: 0; }
+    .steps h3 { align-self: end; }
+    .how-cta :global(.btn) { width: 100%; }
+    .why-list li { grid-template-columns: 48px 1fr; }
+    .hero-actions { width: 100%; }
+    .hero-actions :global(.btn) { flex: 1 1 auto; }
   }
 </style>

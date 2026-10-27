@@ -4,8 +4,8 @@ description: "When you can hike Munduk on your own, when a local guide makes sen
 date: 2026-11-01
 draft: true
 primaryKeyword: Munduk trekking guide
-cover:
-coverAlt:
+cover: /images/blog/guide-with-hikers-in-forest.jpg
+coverAlt: A local guide taking a selfie with two hikers at a giant tree
 relatedTours: []
 ---
 

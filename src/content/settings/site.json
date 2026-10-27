@@ -29,10 +29,17 @@
   "home": {
     "metaTitle": "Munduk Hiking Guide | Twin Lakes Treks with Ketut Darma",
     "metaDescription": "Private hikes around Lake Buyan, Lake Tamblingan and the Munduk waterfalls with Ketut Darma, a local guide in North Bali. Book easily on WhatsApp.",
-    "heroHeadline": "Hike Munduk's Twin Lakes with a local guide",
+    "heroHeadline": "Hike Munduk's Twin Lakes *with a local guide*",
     "heroText": "Private treks through the forest around Lake Buyan and Lake Tamblingan, down to Munduk's waterfalls and through the clove gardens between the villages. Small groups, your pace, booked on WhatsApp.",
-    "heroImage": "",
-    "heroImageAlt": "",
+    "heroImage": "/images/site/twin-lakes-viewpoint.jpg",
+    "heroImageAlt": "Lake Buyan and Lake Tamblingan seen from the forest ridge above Munduk",
+    "gallery": [
+      { "image": "/images/site/canoe-on-lake-tamblingan-selfie.jpg", "alt": "Guests smiling in a canoe on the lake with their guide behind them" },
+      { "image": "/images/site/hikers-at-giant-banyan-tree.jpg", "alt": "A group of hikers celebrating at the foot of a giant banyan tree" },
+      { "image": "/images/site/group-at-lake-tamblingan-temple.jpg", "alt": "A family at the lakeside temple on Lake Tamblingan" },
+      { "image": "/images/site/hikers-on-misty-forest-trail.jpg", "alt": "Hikers in single file on a forest trail" },
+      { "image": "/images/site/guide-selfie-at-banyan-roots.jpg", "alt": "Guide and two hikers taking a selfie among banyan roots" }
+    ],
     "whyChoose": [
       { "title": "A local guide from the highlands", "text": "Ketut lives and works around Munduk. He knows which trails are dry after rain, where the views open up, and which warung serves the best coffee." },
       { "title": "Private, never a crowd", "text": "Every hike is just you and your group. Walk at your own pace, stop for photos, and ask anything along the way." },

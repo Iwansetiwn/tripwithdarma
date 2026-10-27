@@ -4,8 +4,8 @@ description: "Driving times, private driver vs scooter, the route past Bedugul a
 date: 2026-11-01
 draft: true
 primaryKeyword: Ubud to Munduk
-cover:
-coverAlt:
+cover: /images/blog/rice-terraces-on-the-way.jpg
+coverAlt: Travelers walking along rice terraces in the Bali highlands
 relatedTours: []
 ---
 

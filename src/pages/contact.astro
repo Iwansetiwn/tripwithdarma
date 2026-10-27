@@ -1,7 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
 import Breadcrumbs from '../components/Breadcrumbs.astro';
-import Contours from '../components/Contours.astro';
+import Ridges from '../components/Ridges.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
 import AreaMap from '../components/AreaMap.astro';
 import Icon from '../components/Icon.astro';
@@ -26,9 +26,9 @@ const schema = graph(
   schema={schema}
 >
   <section class="page-hero">
-    <Contours opacity={0.14} />
+    <Ridges />
     <div class="container inner">
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Contact' }]} inverted />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Contact' }]}/>
       <h1>Contact &amp; location</h1>
       <p>The fastest way to reach Ketut is WhatsApp. Send your date, the hike you'd like and your group size.</p>
       <div><WhatsAppButton placement="contact-hero" label="Message on WhatsApp" /></div>
@@ -91,12 +91,14 @@ const schema = graph(
   .list { list-style: none; display: grid; gap: 16px; }
   .list li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
   .list :global(svg) { color: var(--lake); margin-top: 3px; }
+  .list li { padding: 16px 18px; background: var(--paper); border: 1px solid var(--line); border-radius: 16px; }
   address { font-style: normal; }
   .area { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
-  .maps { display: grid; gap: 12px; position: sticky; top: 16px; }
+  .maps { display: grid; gap: 12px; position: sticky; top: calc(var(--header-h) + 24px); }
+  .map-embed { padding: 10px; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); }
   .map-embed { position: relative; display: grid; }
-  .map-embed :global(iframe) { width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: 8px; }
-  .load-map { position: absolute; top: 16px; right: 16px; background: var(--paper); }
-  .open { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
+  .map-embed :global(iframe) { width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: 10px; }
+  .load-map { position: absolute; top: 22px; right: 22px; background: var(--paper); min-height: 42px; padding: 8px 16px; font-size: 0.95rem; }
+  .open { display: inline-flex; gap: 6px; align-items: center; font-weight: 650; text-decoration: none; color: var(--forest); }
   @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } .maps { position: static; } }
 </style>

@@ -62,9 +62,21 @@ whatToBring:
   - Sarong or clothes covering shoulders and knees for the temple
   - Cash for entrance fees and lunch
 elevationProfile: []
-cover:
-coverAlt:
-gallery: []
+cover: /images/tours/day-hike-group-on-fallen-tree.jpg
+coverAlt: A group of hikers with walking sticks on a fallen tree in the forest
+gallery:
+  - image: /images/tours/day-hike-lakes-viewpoint.jpg
+    alt: View over Lake Buyan and Lake Tamblingan from the forest ridge
+  - image: /images/tours/day-hike-jungle-trail.jpg
+    alt: Hikers on a narrow jungle trail
+  - image: /images/tours/day-hike-canoe.jpg
+    alt: Paddling a wooden canoe across the lake
+  - image: /images/tours/day-hike-waterfall-pool.jpg
+    alt: Waterfall and pool at the end of the forest trail
+  - image: /images/tours/day-hike-hiker-on-trail.jpg
+    alt: A hiker walking through tall forest
+  - image: /images/tours/day-hike-twin-falls.jpg
+    alt: Two tall waterfalls side by side in a green valley
 ---
 
 For hikers who want to see the whole Munduk area in one day. The morning is spent in the forest between **Lake Buyan** and **Lake Tamblingan**, when the air is cool and the lakes are often still. After lunch you'll walk down through the plantations to **Munduk's waterfalls**.

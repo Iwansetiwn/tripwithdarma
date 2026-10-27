@@ -4,8 +4,8 @@ description: "Is it worth hiking Munduk between November and March? Rain pattern
 date: 2026-11-01
 draft: true
 primaryKeyword: Munduk rainy season hiking
-cover:
-coverAlt:
+cover: /images/blog/wet-season-forest-trail.jpg
+coverAlt: Hikers on a damp forest trail in the wet season
 relatedTours: []
 ---
 

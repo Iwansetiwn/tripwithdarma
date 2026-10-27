@@ -2,7 +2,7 @@
 import Base from '../../layouts/Base.astro';
 import TourCard from '../../components/TourCard.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import Contours from '../../components/Contours.astro';
+import Ridges from '../../components/Ridges.astro';
 import { getTours, getSite, getGuide } from '../../lib/site';
 import { breadcrumbSchema, businessSchema, graph } from '../../lib/schema';
 
@@ -25,9 +25,9 @@ const schema = graph(
   schema={schema}
 >
   <section class="page-hero">
-    <Contours opacity={0.14} />
+    <Ridges />
     <div class="container inner">
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Hikes' }]} inverted />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Hikes' }]}/>
       <h1>Munduk trekking tours</h1>
       <p>Private hikes around the Twin Lakes and Munduk's waterfalls with a local guide. Compare duration, difficulty and price, then book on WhatsApp.</p>
     </div>

@@ -1,6 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
 import Photo from './Photo.astro';
+import Icon from './Icon.astro';
 import { formatDate } from '../lib/site';
 interface Props { post: CollectionEntry<'blog'>; headingLevel?: 'h2' | 'h3' }
 const { post, headingLevel = 'h3' } = Astro.props;
@@ -8,19 +9,24 @@ const H = headingLevel;
 const url = `/blog/${post.id}/`;
 ---
 <article class="post-card">
-  <a href={url} tabindex="-1" aria-hidden="true"><Photo src={post.data.cover} alt="" sizes="(max-width: 760px) 100vw, 380px" aspect="16 / 9" widths={[400, 640, 800]} label="Hiking guide" /></a>
+  <Photo src={post.data.cover} alt="" sizes="(max-width: 760px) 100vw, 400px" aspect="16 / 10" widths={[400, 640, 800]} />
   <div class="body">
     <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
     <H><a href={url}>{post.data.title}</a></H>
     <p>{post.data.description}</p>
+    <span class="read" aria-hidden="true">Read the guide <Icon name="arrow" size={17} /></span>
   </div>
 </article>
 <style>
-  .post-card { display: grid; gap: 14px; align-content: start; }
-  .body { display: grid; gap: 8px; }
-  time { font-size: var(--step--1); color: var(--muted); }
-  h2, h3 { font-size: 1.55rem; text-transform: uppercase; }
-  h2 a, h3 a { color: var(--canopy); text-decoration: none; }
-  h2 a:hover, h3 a:hover { color: var(--lake); }
-  p { color: var(--muted); }
+  .post-card { position: relative; display: grid; gap: 18px; align-content: start; }
+  .post-card :global(.photo) { border-radius: 18px; transition: transform 0.4s ease, box-shadow 0.3s; }
+  .post-card:hover :global(.photo) { transform: translateY(-3px); box-shadow: var(--shadow-lift); }
+  .body { display: grid; gap: 8px; justify-items: start; }
+  time { font: 650 0.75rem/1 var(--body); text-transform: uppercase; letter-spacing: 0.14em; color: var(--clay-ink); }
+  h2, h3 { font-size: 1.4rem; line-height: 1.2; }
+  h2 a, h3 a { color: var(--forest); text-decoration: none; }
+  h2 a::after, h3 a::after { content: ''; position: absolute; inset: 0; }
+  .post-card:hover h2 a, .post-card:hover h3 a { color: var(--lake); }
+  p { color: var(--muted); display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+  .read { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; color: var(--forest); font-size: 0.95rem; margin-top: 4px; }
 </style>

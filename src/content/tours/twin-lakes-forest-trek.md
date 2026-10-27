@@ -61,9 +61,21 @@ whatToBring:
   - Sarong or clothes covering shoulders and knees for the temple
   - Cash for entrance fees
 elevationProfile: []
-cover:
-coverAlt:
-gallery: []
+cover: /images/tours/twin-lakes-canoe-on-tamblingan.jpg
+coverAlt: Hikers in a wooden canoe on Lake Tamblingan with the forested crater rim behind
+gallery:
+  - image: /images/tours/twin-lakes-canoe-blue-sky.jpg
+    alt: Two canoes crossing Lake Tamblingan under a blue sky
+  - image: /images/tours/twin-lakes-temple-from-canoe.jpg
+    alt: Hikers photographing the lakeside temple of Pura Ulun Danu Tamblingan from a canoe
+  - image: /images/tours/twin-lakes-giant-tree.jpg
+    alt: A young hiker standing inside the hollow trunk of a giant forest tree
+  - image: /images/tours/twin-lakes-forest-path.jpg
+    alt: Two hikers on the forest path between the twin lakes
+  - image: /images/tours/twin-lakes-misty-morning.jpg
+    alt: Hikers in a canoe on the lake on a misty morning
+  - image: /images/tours/twin-lakes-banyan-roots.jpg
+    alt: Huge banyan roots spreading across the trail
 ---
 
 This is the classic Munduk hike: a forest walk between **Lake Buyan** and **Lake Tamblingan**, the twin crater lakes in the highlands of North Bali. The trail leaves the open shore of Buyan, climbs over the forested ridge that separates the lakes, and comes down to Tamblingan, where small temples stand right at the water's edge.

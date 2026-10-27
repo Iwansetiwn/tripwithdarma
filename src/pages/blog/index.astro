@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import Contours from '../../components/Contours.astro';
+import Ridges from '../../components/Ridges.astro';
 import PostCard from '../../components/PostCard.astro';
 import { getPosts } from '../../lib/site';
 import { breadcrumbSchema, graph } from '../../lib/schema';
@@ -19,9 +19,9 @@ const schema = graph(
   schema={schema}
 >
   <section class="page-hero">
-    <Contours opacity={0.14} />
+    <Ridges />
     <div class="container inner">
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides' }]} inverted />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides' }]}/>
       <h1>Munduk hiking guides</h1>
       <p>Local tips for planning your hike: seasons, trails, packing and getting to the highlands.</p>
     </div>

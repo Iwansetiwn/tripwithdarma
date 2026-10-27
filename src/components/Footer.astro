@@ -1,7 +1,6 @@
 ---
 import Logo from './Logo.astro';
 import Icon from './Icon.astro';
-import Contours from './Contours.astro';
 import { getSite, getTours, waLink } from '../lib/site';
 
 const site = await getSite();
@@ -10,7 +9,6 @@ const a = site.address;
 const year = new Date().getFullYear();
 ---
 <footer class="site-footer">
-  <Contours opacity={0.08} />
   <div class="container cols">
     <div class="brand">
       <Logo inverted />
@@ -34,7 +32,7 @@ const year = new Date().getFullYear();
       <ul>
         <li><a href="/meet-your-guide/">Meet Ketut</a></li>
         <li><a href="/reviews/">Reviews</a></li>
-        <li><a href="/blog/">Hiking guides</a></li>
+        <li><a href="/blog/">Trip guides</a></li>
         <li><a href="/faq/">FAQ</a></li>
         <li><a href="/contact/">Contact &amp; map</a></li>
       </ul>
@@ -60,16 +58,18 @@ const year = new Date().getFullYear();
   </div>
 </footer>
 <style>
-  .site-footer { position: relative; overflow: hidden; background: var(--canopy-deep); color: #dbe5dd; padding-block: 56px 24px; }
-  .cols { position: relative; display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 32px; }
-  .brand { display: grid; gap: 14px; align-content: start; }
-  address { font-style: normal; font-size: var(--step--1); line-height: 1.6; color: #b9c8bd; }
-  address strong { color: #fff; }
-  .fh { font-size: 1.2rem; color: #fff; margin-bottom: 12px; letter-spacing: 0.04em; }
-  ul { list-style: none; display: grid; gap: 8px; }
-  a { color: #dbe5dd; text-decoration: none; display: inline-flex; gap: 6px; align-items: center; }
+  .site-footer { position: relative; background: var(--forest-deep); color: #d3ddd5; padding-block: 64px 28px; border-top: 1px solid rgb(255 255 255 / 0.08); }
+  .cols { display: grid; grid-template-columns: 1.6fr repeat(3, 1fr); gap: 40px; }
+  .brand { display: grid; gap: 16px; align-content: start; }
+  .brand > p { font: 400 1.15rem/1.4 var(--serif); font-style: italic; color: #e7eee9; max-width: 30ch; }
+  address { font-style: normal; font-size: var(--step--1); line-height: 1.7; color: #a9bbaf; }
+  address strong { color: #fff; font-weight: 600; }
+  .fh { font: 650 0.75rem/1 var(--body); text-transform: uppercase; letter-spacing: 0.16em; color: var(--clay-light); margin-bottom: 18px; }
+  ul { list-style: none; display: grid; gap: 10px; }
+  a { color: #d3ddd5; text-decoration: none; display: inline-flex; gap: 8px; align-items: center; }
   a:hover { color: #fff; text-decoration: underline; }
-  .legal { position: relative; margin-top: 40px; padding-top: 20px; border-top: 1px solid rgb(255 255 255 / 0.14); font-size: var(--step--1); color: #9fb2a5; }
+  .legal { margin-top: 48px; font-size: var(--step--1); color: #8fa497; }
+  .legal p { padding-top: 22px; border-top: 1px solid rgb(255 255 255 / 0.1); }
   @media (max-width: 860px) { .cols { grid-template-columns: 1fr 1fr; } .brand { grid-column: 1 / -1; } }
   @media (max-width: 420px) { .cols { grid-template-columns: 1fr; } }
 </style>

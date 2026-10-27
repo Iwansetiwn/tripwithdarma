@@ -5,8 +5,8 @@ description: When to hike Lake Buyan and Lake Tamblingan in Munduk, North Bali. 
 date: 2026-10-27
 draft: false
 primaryKeyword: best time to hike Twin Lakes Bali
-cover:
-coverAlt:
+cover: /images/blog/misty-morning-on-the-lake.jpg
+coverAlt: Morning mist over the lake as hikers set off by canoe
 relatedTours:
   - twin-lakes-forest-trek
   - twin-lakes-and-waterfalls-day-hike

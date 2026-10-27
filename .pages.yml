@@ -227,12 +227,19 @@ content:
         label: Homepage
         type: object
         fields:
-          - { name: heroHeadline, label: Big headline, type: string }
+          - { name: heroHeadline, label: "Big headline (wrap words in *asterisks* to show them in italic)", type: string }
           - { name: heroText, label: Text under the headline, type: text }
           - { name: heroImage, label: Hero photo, type: image }
           - { name: heroImageAlt, label: Hero photo description, type: string }
           - { name: metaTitle, label: Google title, type: string }
           - { name: metaDescription, label: Google description, type: text }
+          - name: gallery
+            label: "Photos from the trail (homepage strip, 5 photos work best)"
+            type: object
+            list: true
+            fields:
+              - { name: image, label: Photo, type: image }
+              - { name: alt, label: Photo description, type: string }
           - name: whyChoose
             label: Why choose Ketut (4 points)
             type: object

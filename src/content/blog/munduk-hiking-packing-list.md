@@ -5,8 +5,8 @@ description: What to wear and pack for hiking in Munduk, North Bali. Shoes, rain
 date: 2026-10-27
 draft: false
 primaryKeyword: Munduk hiking packing list
-cover:
-coverAlt:
+cover: /images/blog/hiker-with-daypack.jpg
+coverAlt: A hiker with a small daypack walking a forest path
 relatedTours:
   - munduk-waterfalls-trek
   - twin-lakes-forest-trek

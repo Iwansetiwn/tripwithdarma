@@ -105,6 +105,7 @@ const site = defineCollection({
       heroImageAlt: optString,
       metaTitle: z.string(),
       metaDescription: z.string(),
+      gallery: z.preprocess((v) => (v == null ? [] : v), z.array(z.object({ image: z.string(), alt: z.string().default('') }))),
       whyChoose: z.preprocess((v) => (v == null ? [] : v), z.array(z.object({ title: z.string(), text: z.string() }))),
     }),
   }),

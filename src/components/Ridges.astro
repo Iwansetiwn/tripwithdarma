@@ -1,0 +1,15 @@
+---
+// Layered ridge silhouettes of the caldera rim, laid along the bottom (or top) edge of a band.
+interface Props { flip?: boolean; class?: string; tone?: 'light' | 'dark' }
+const { flip = false, class: cls, tone = 'light' } = Astro.props;
+const fills = tone === 'light' ? ['#d8e1da', '#bccbc1', '#f6f3ec'] : ['#2a4a3b', '#1f3d30', '#132a20'];
+---
+<svg class:list={['ridges', { flip }, cls]} viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+  <path d="M0 70C140 40 260 30 380 48C520 70 610 18 760 22C900 26 980 64 1120 58C1250 52 1350 30 1440 36V120H0Z" fill={fills[0]} />
+  <path d="M0 92C160 70 300 84 450 78C620 70 700 52 860 62C1000 71 1120 94 1260 86C1340 82 1400 74 1440 72V120H0Z" fill={fills[1]} />
+  <path d="M0 108C200 98 420 112 640 106C860 100 1100 112 1440 102V120H0Z" fill={fills[2]} />
+</svg>
+<style>
+  .ridges { position: absolute; left: 0; right: 0; bottom: -1px; width: 100%; height: clamp(48px, 7vw, 110px); pointer-events: none; }
+  .flip { bottom: auto; top: -1px; transform: scaleY(-1); }
+</style>

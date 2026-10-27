@@ -62,7 +62,7 @@ if (!chromium) {
 }
 const font = async (f) => (await readFile(pub(`fonts/${f}`))).toString('base64');
 const html = `<!doctype html><html><head><style>
-@font-face{font-family:B;font-weight:700;src:url(data:font/woff2;base64,${await font('barlow-condensed-latin-700-normal.woff2')}) format('woff2')}
+@font-face{font-family:B;font-weight:100 900;src:url(data:font/woff2;base64,${await font('fraunces-latin-wght-normal.woff2')}) format('woff2')}
 @font-face{font-family:S;font-weight:200 900;src:url(data:font/woff2;base64,${await font('source-sans-3-latin-wght-normal.woff2')}) format('woff2')}
 html,body{margin:0;width:1200px;height:630px;overflow:hidden}
 body{background:#1E3B2C;color:#F2F5F1;font-family:S;position:relative}
@@ -70,9 +70,9 @@ svg.c{position:absolute;inset:0;width:100%;height:100%;opacity:.18}
 .w{position:absolute;inset:0;padding:72px 80px;display:flex;flex-direction:column;justify-content:space-between}
 .top{display:flex;align-items:center;gap:20px}
 .top svg{width:84px;height:84px}
-.name{font:700 46px/1 B;text-transform:uppercase;letter-spacing:.01em}
+.name{font:600 46px/1 B;letter-spacing:-.01em}
 .sub{font:600 20px/1 S;text-transform:uppercase;letter-spacing:.16em;color:#E4572E;margin-top:8px}
-h1{font:700 92px/0.98 B;text-transform:uppercase;margin:0;max-width:960px}
+h1{font:560 84px/1.02 B;letter-spacing:-.02em;margin:0;max-width:960px}
 .chips{display:flex;gap:12px;font:600 22px/1 S;text-transform:uppercase;letter-spacing:.06em}
 .chips span{background:#F2F5F1;color:#151B17;padding:12px 16px;border-radius:6px}
 .chips span.m{background:#E4572E}
@@ -97,12 +97,12 @@ console.log('og-default.jpg written.');
 for (const [file, bg, fg] of [['logo-horizontal.png', '#F2F5F1', '#1E3B2C'], ['logo-horizontal-dark.png', '#1E3B2C', '#F2F5F1']]) {
   await page.setViewportSize({ width: 1200, height: 300 });
   await page.setContent(`<!doctype html><html><head><style>
-  @font-face{font-family:B;font-weight:700;src:url(data:font/woff2;base64,${await font('barlow-condensed-latin-700-normal.woff2')}) format('woff2')}
+  @font-face{font-family:B;font-weight:100 900;src:url(data:font/woff2;base64,${await font('fraunces-latin-wght-normal.woff2')}) format('woff2')}
   @font-face{font-family:S;font-weight:200 900;src:url(data:font/woff2;base64,${await font('source-sans-3-latin-wght-normal.woff2')}) format('woff2')}
   html,body{margin:0;width:1200px;height:300px;background:${bg}}
   .l{display:flex;align-items:center;gap:36px;height:300px;padding:0 60px;box-sizing:border-box}
   .l svg{width:180px;height:180px}
-  .n{white-space:nowrap;font:700 104px/1 B;text-transform:uppercase;color:${fg};letter-spacing:.01em}
+  .n{white-space:nowrap;font:600 104px/1 B;color:${fg};letter-spacing:-.01em}
   .s{font:600 32px/1 S;text-transform:uppercase;letter-spacing:.16em;color:${bg === '#F2F5F1' ? '#B53D1A' : '#F59B76'};margin-top:12px}
   </style></head><body><div class="l">${mark(12).toString()}<div><div class="n">Trip with Darma</div><div class="s">Munduk hiking guide</div></div></div></body></html>`);
   await page.evaluate(() => document.fonts.ready);

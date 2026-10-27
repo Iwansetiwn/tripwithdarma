@@ -4,8 +4,8 @@ description: "How to spend two days in Munduk: Twin Lakes hike, waterfalls, coff
 date: 2026-11-01
 draft: true
 primaryKeyword: Munduk itinerary
-cover:
-coverAlt:
+cover: /images/blog/canoe-under-blue-sky.jpg
+coverAlt: Two travelers in a canoe on the lake under a blue sky
 relatedTours: []
 ---
 

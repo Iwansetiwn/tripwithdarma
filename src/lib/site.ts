@@ -52,3 +52,9 @@ export function formatPrice(price: number | undefined, currency: 'IDR' | 'USD') 
 export function formatDate(date: Date) {
   return date.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
 }
+
+/** Escapes CMS text and turns *words* into <em>words</em> for headline accents. */
+export function accent(text: string) {
+  const esc = text.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return esc.replace(/\*(.+?)\*/g, '<em>$1</em>');
+}

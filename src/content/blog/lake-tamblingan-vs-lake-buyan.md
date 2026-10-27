@@ -4,8 +4,8 @@ description: "How Bali's twin crater lakes differ: size, temples, trails, canoes
 date: 2026-11-01
 draft: true
 primaryKeyword: Lake Tamblingan vs Lake Buyan
-cover:
-coverAlt:
+cover: /images/blog/lily-pads-lake-tamblingan.jpg
+coverAlt: Canoe drifting past lily pads on a crater lake
 relatedTours: []
 ---
 

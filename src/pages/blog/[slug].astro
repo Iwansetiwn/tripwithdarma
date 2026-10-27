@@ -3,7 +3,7 @@ import type { GetStaticPaths } from 'astro';
 import { render, getEntry } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import Contours from '../../components/Contours.astro';
+import Ridges from '../../components/Ridges.astro';
 import Photo from '../../components/Photo.astro';
 import TourCard from '../../components/TourCard.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
@@ -37,9 +37,9 @@ const schema = graph(
 ---
 <Base title={d.metaTitle ?? `${d.title} | Trip with Darma`} description={d.description} image={og} imageAlt={d.coverAlt} type="article" schema={schema} publishedTime={d.date}>
   <section class="page-hero">
-    <Contours opacity={0.14} />
+    <Ridges />
     <div class="container inner">
-      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides', href: '/blog/' }, { name: d.title }]} inverted />
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides', href: '/blog/' }, { name: d.title }]}/>
       <h1>{d.title}</h1>
       <p class="meta">
         By <a href="/meet-your-guide/">{guide.name}</a> ·
@@ -68,10 +68,13 @@ const schema = graph(
 </Base>
 <style>
   .meta { font-size: var(--step-0) !important; }
-  .meta a { color: #fff; }
+  .meta { color: var(--muted); }
+  .meta a { color: var(--forest); font-weight: 600; }
   .post { display: grid; gap: 36px; max-width: 860px; }
   .prose { font-size: 1.125rem; }
-  .cta { background: var(--paper); border: 1px solid var(--line); border-left: 6px solid var(--marker); border-radius: 8px; padding: 24px; display: grid; gap: 12px; justify-items: start; }
+  .cta { background: var(--sand); border-radius: 22px; padding: clamp(24px, 4vw, 40px); display: grid; gap: 12px; justify-items: start; }
+  .cta p { color: var(--muted); }
+  .post > :global(.photo) { border-radius: 22px; }
   .cta h2 { font-size: var(--step-2); }
   .band { background: var(--paper); border-block: 1px solid var(--line); }
 </style>

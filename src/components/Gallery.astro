@@ -1,0 +1,114 @@
+---
+// Photo grid with a tap-to-enlarge viewer (native <dialog>, arrow keys and swipe-free buttons).
+import { getImage } from 'astro:assets';
+import Photo from './Photo.astro';
+import Icon from './Icon.astro';
+import { resolveImage } from '../lib/images';
+
+interface Props { items: { image: string; alt: string }[]; layout?: 'grid' | 'strip' }
+const { items, layout = 'grid' } = Astro.props;
+const photos = (
+  await Promise.all(
+    items.map(async (it) => {
+      const img = resolveImage(it.image);
+      if (!img) return undefined;
+      const full = await getImage({ src: img, width: Math.min(img.width, 1600), format: 'webp', quality: 82 });
+      return { ...it, full: full.src };
+    }),
+  )
+).filter((p) => p !== undefined);
+---
+{photos.length > 0 && (
+  <div class:list={['gallery', `gallery-${layout}`]} data-gallery>
+    <ul>
+      {photos.map((p, i) => (
+        <li>
+          <button type="button" data-full={p.full} data-alt={p.alt} data-index={i} aria-label={`Enlarge photo: ${p.alt}`}>
+            <Photo src={p.image} alt={p.alt} sizes={layout === 'strip' ? '(max-width: 760px) 70vw, 300px' : '(max-width: 760px) 50vw, 300px'} aspect={layout === 'strip' ? '4 / 5' : '1 / 1'} widths={[320, 480, 640]} />
+          </button>
+        </li>
+      ))}
+    </ul>
+    <dialog aria-label="Photo viewer">
+      <figure>
+        <img alt="" />
+        <figcaption></figcaption>
+      </figure>
+      <button type="button" class="nav prev" data-step="-1" aria-label="Previous photo"><Icon name="arrow" size={22} /></button>
+      <button type="button" class="nav next" data-step="1" aria-label="Next photo"><Icon name="arrow" size={22} /></button>
+      <button type="button" class="close" aria-label="Close"><Icon name="x" size={22} /></button>
+    </dialog>
+  </div>
+)}
+<script>
+  document.querySelectorAll<HTMLElement>('[data-gallery]').forEach((root) => {
+    const thumbs = Array.from(root.querySelectorAll<HTMLButtonElement>('button[data-full]'));
+    const dlg = root.querySelector('dialog')!;
+    const img = dlg.querySelector('img')!;
+    const cap = dlg.querySelector('figcaption')!;
+    let at = 0;
+    const show = (i: number) => {
+      at = (i + thumbs.length) % thumbs.length;
+      img.src = thumbs[at].dataset.full!;
+      img.alt = thumbs[at].dataset.alt!;
+      cap.textContent = `${thumbs[at].dataset.alt}  ·  ${at + 1} / ${thumbs.length}`;
+    };
+    thumbs.forEach((t, i) => t.addEventListener('click', () => { show(i); dlg.showModal(); }));
+    dlg.querySelectorAll<HTMLButtonElement>('[data-step]').forEach((b) => b.addEventListener('click', () => show(at + Number(b.dataset.step))));
+    dlg.querySelector('.close')!.addEventListener('click', () => dlg.close());
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dlg.close(); });
+    dlg.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') show(at + 1);
+      if (e.key === 'ArrowLeft') show(at - 1);
+    });
+  });
+</script>
+<style>
+  ul { list-style: none; display: grid; gap: 10px; }
+  li button { display: block; width: 100%; padding: 0; border: 0; background: none; cursor: zoom-in; border-radius: 14px; overflow: hidden; }
+  li :global(.photo) { border-radius: 14px; transition: transform 0.5s ease; }
+  li button:hover :global(.photo) { transform: scale(1.04); }
+
+  /* 3 columns with a 2×2 lead photo: 6 or 9 photos fill the grid exactly. */
+  .gallery-grid ul { grid-template-columns: repeat(3, 1fr); }
+  .gallery-grid li:first-child { grid-column: span 2; grid-row: span 2; }
+  .gallery-grid li:first-child :global(.photo) { height: 100%; }
+  .gallery-grid li:first-child button { height: 100%; }
+
+  .gallery-strip ul { grid-template-columns: repeat(5, 1fr); gap: 14px; }
+  .gallery-strip li:nth-child(even) { margin-top: 36px; }
+  .gallery-strip li :global(.photo) { border-radius: 18px; }
+
+  dialog {
+    width: 100vw; height: 100dvh; max-width: none; max-height: none; margin: 0; padding: 0; border: 0;
+    background: rgb(12 22 17 / 0.94); color: #e6ede8;
+  }
+  dialog::backdrop { background: rgb(12 22 17 / 0.6); }
+  dialog[open] { display: grid; place-items: center; }
+  figure { margin: 0; display: grid; gap: 12px; justify-items: center; padding: 64px 72px 24px; max-width: 100%; }
+  dialog img { max-width: min(100%, 1200px); max-height: calc(100dvh - 140px); width: auto; height: auto; border-radius: 10px; object-fit: contain; }
+  figcaption { font-size: 0.92rem; text-align: center; color: #c5d4c9; }
+  .nav, .close {
+    position: absolute; width: 48px; height: 48px; border-radius: 50%; display: grid; place-items: center;
+    background: rgb(255 255 255 / 0.12); border: 1px solid rgb(255 255 255 / 0.2); color: #fff; cursor: pointer;
+  }
+  .nav:hover, .close:hover { background: rgb(255 255 255 / 0.22); }
+  .prev { left: 16px; top: 50%; transform: translateY(-50%) scaleX(-1); }
+  .next { right: 16px; top: 50%; transform: translateY(-50%); }
+  .close { right: 16px; top: 16px; }
+
+  @media (max-width: 760px) {
+    .gallery-grid ul { grid-template-columns: 1fr 1fr; }
+    .gallery-grid li:first-child { grid-row: span 1; }
+    .gallery-grid li:first-child :global(.photo) { aspect-ratio: 16 / 10 !important; }
+    .gallery-grid li:last-child:nth-child(even) { grid-column: span 2; }
+    .gallery-grid li:last-child:nth-child(even) :global(.photo) { aspect-ratio: 16 / 10 !important; }
+    .gallery-strip ul { grid-auto-flow: column; grid-auto-columns: 62%; grid-template-columns: none; overflow-x: auto; scroll-snap-type: x mandatory; padding-bottom: 8px; }
+    .gallery-strip li { scroll-snap-align: start; }
+    .gallery-strip li:nth-child(even) { margin-top: 0; }
+    figure { padding: 64px 12px 90px; }
+    .nav { top: auto; bottom: 20px; }
+    .prev { left: calc(50% - 60px); transform: scaleX(-1); }
+    .next { right: calc(50% - 60px); transform: none; }
+  }
+</style>

@@ -56,9 +56,21 @@ whatToBring:
   - Insect repellent and sunscreen
   - Cash for entrance fees
 elevationProfile: []
-cover:
-coverAlt:
-gallery: []
+cover: /images/tours/waterfalls-twin-falls.jpg
+coverAlt: Twin waterfall pouring down a fern-covered cliff in the forest near Munduk
+gallery:
+  - image: /images/tours/waterfalls-tall-falls.jpg
+    alt: A tall, narrow waterfall falling into a rocky pool
+  - image: /images/tours/waterfalls-jungle-falls.jpg
+    alt: Waterfall framed by jungle on the Munduk trail
+  - image: /images/tours/waterfalls-river-falls.jpg
+    alt: Waterfall and river boulders deep in the valley
+  - image: /images/tours/waterfalls-wide-falls.jpg
+    alt: A wide waterfall spilling over a mossy cliff
+  - image: /images/tours/waterfalls-cascade.jpg
+    alt: A powerful cascade with swimmers in the pool below
+  - image: /images/tours/waterfalls-pool-swim.jpg
+    alt: Hikers swimming in a waterfall pool
 ---
 
 Munduk sits on a ridge above deep, green river valleys, and the streams that run off the highlands drop over a series of waterfalls just below the village. This trek links several of them on foot, following the paths villagers use to reach their gardens.

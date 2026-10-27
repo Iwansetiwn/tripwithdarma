@@ -1,7 +1,6 @@
 ---
 import { Picture } from 'astro:assets';
 import { resolveImage } from '../lib/images';
-import Contours from './Contours.astro';
 
 interface Props {
   src?: string;
@@ -10,11 +9,11 @@ interface Props {
   sizes: string;
   aspect?: string;
   eager?: boolean;
-  label?: string;
   class?: string;
 }
-const { src, alt = '', widths = [400, 640, 960, 1280], sizes, aspect = '4 / 3', eager = false, label = 'Photo coming soon', class: cls } = Astro.props;
+const { src, alt = '', widths = [400, 640, 960, 1280], sizes, aspect = '4 / 3', eager = false, class: cls } = Astro.props;
 const image = resolveImage(src);
+// Renders nothing when no photo is set, so layouts collapse cleanly instead of showing a placeholder.
 ---
 {image ? (
   <Picture
@@ -32,20 +31,7 @@ const image = resolveImage(src);
   />
 ) : src ? (
   <img src={src} alt={alt} loading={eager ? 'eager' : 'lazy'} class:list={['photo', cls]} style={`aspect-ratio:${aspect}`} />
-) : (
-  <div class:list={['photo placeholder', cls]} style={`aspect-ratio:${aspect}`} role="presentation">
-    <Contours opacity={0.35} />
-    <span>{label}</span>
-  </div>
-)}
+) : null}
 <style>
-  :global(.photo) { width: 100%; height: auto; object-fit: cover; border-radius: var(--radius); background: var(--lake-soft); }
-  .placeholder {
-    position: relative; overflow: hidden; display: grid; place-items: end start; padding: 14px;
-    background: linear-gradient(160deg, var(--canopy) 0%, #24503b 60%, var(--lake) 100%); color: var(--mist);
-  }
-  .placeholder span {
-    position: relative; font: 600 0.75rem/1 var(--body); text-transform: uppercase; letter-spacing: 0.12em;
-    background: rgb(20 42 31 / 0.6); padding: 6px 8px; border-radius: 3px;
-  }
+  :global(.photo) { width: 100%; height: auto; object-fit: cover; border-radius: var(--radius); background: var(--sand); }
 </style>
