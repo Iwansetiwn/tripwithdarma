@@ -1,0 +1,23 @@
+---
+import Icon from './Icon.astro';
+import type { CollectionEntry } from 'astro:content';
+import { formatPrice } from '../lib/site';
+interface Props { tour: CollectionEntry<'tours'>['data']; showPrice?: boolean; large?: boolean }
+const { tour, showPrice = true, large = false } = Astro.props;
+const price = formatPrice(tour.price, tour.priceCurrency);
+---
+<ul class:list={['facts', { large }]} aria-label="Hike facts">
+  <li class="chip"><Icon name="clock" /><span class="visually-hidden">Duration:</span>{tour.duration}</li>
+  {tour.distanceKm && <li class="chip"><Icon name="route" /><span class="visually-hidden">Distance:</span>{tour.distanceKm} km</li>}
+  <li class={`chip chip-${tour.difficulty.toLowerCase()}`}><Icon name="mountain" /><span class="visually-hidden">Difficulty:</span>{tour.difficulty}</li>
+  {showPrice && (
+    <li class="chip price"><span class="visually-hidden">Price:</span>{price ? <>{price} <small>{tour.priceUnit}</small></> : 'Price on WhatsApp'}</li>
+  )}
+</ul>
+<style>
+  .facts { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .price { background: var(--canopy); color: var(--mist); border-color: transparent; }
+  .price small { font-size: 0.72rem; opacity: 0.85; text-transform: none; letter-spacing: 0; }
+  :global(.page-hero) .price { border-color: rgb(255 255 255 / 0.45); }
+  .large .chip { font-size: 0.95rem; padding: 9px 12px; }
+</style>

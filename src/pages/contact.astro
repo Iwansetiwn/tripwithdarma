@@ -1,0 +1,102 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Contours from '../components/Contours.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Icon from '../components/Icon.astro';
+import { getSite, getGuide } from '../lib/site';
+import { breadcrumbSchema, businessSchema, graph } from '../lib/schema';
+
+const site = await getSite();
+const guide = await getGuide();
+const a = site.address;
+const url = new URL('/contact/', Astro.site).href;
+const mapsLink = site.googleBusinessUrl ?? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.mapQuery)}`;
+const embed = `https://www.google.com/maps?q=${encodeURIComponent(site.mapQuery)}&z=12&output=embed`;
+const schema = graph(
+  { '@type': 'ContactPage', url, about: { '@id': 'https://tripwithdarma.my.id/#business' } },
+  businessSchema(site, guide, Astro.site!),
+  breadcrumbSchema([{ name: 'Home', url: Astro.site!.href }, { name: 'Contact', url }]),
+);
+---
+<Base
+  title="Contact Ketut Darma | Munduk Hiking Guide, North Bali"
+  description="Book a hike or ask a question on WhatsApp. Ketut Darma guides hikes around Munduk, Lake Buyan and Lake Tamblingan in North Bali. Location, map and how to get here."
+  schema={schema}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Contact' }]} inverted />
+      <h1>Contact &amp; location</h1>
+      <p>The fastest way to reach Ketut is WhatsApp. Send your date, the hike you'd like and your group size.</p>
+      <div><WhatsAppButton placement="contact-hero" label="Message on WhatsApp" /></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container cols">
+      <div class="details">
+        <h2>Get in touch</h2>
+        <ul class="list">
+          <li><Icon name="whatsapp" size={22} /><div><strong>WhatsApp</strong><br />{site.phoneDisplay ?? 'Tap any WhatsApp button on this site'}</div></li>
+          {site.email && <li><Icon name="chat" size={22} /><div><strong>Email</strong><br /><a href={`mailto:${site.email}`}>{site.email}</a></div></li>}
+          <li><Icon name="pin" size={22} />
+            <address>
+              <strong>{site.businessName}</strong> ({site.guideName})<br />
+              {a.street && <>{a.street}<br /></>}
+              {a.village}, {a.district}, {a.regency}<br />
+              {a.province} {a.postalCode}, Indonesia
+            </address>
+          </li>
+          <li><Icon name="clock" size={22} /><div><strong>Hours</strong><br />Hikes daily from early morning. Replies on WhatsApp 7:00–18:00 (Bali time, GMT+8).</div></li>
+        </ul>
+
+        <h2>Service area</h2>
+        <p>Hikes start in and around Munduk. Ketut can meet you at your hotel in:</p>
+        <ul class="area">{site.serviceArea.map((s) => <li class="chip">{s}</li>)}</ul>
+
+        <h2>How to get to Munduk</h2>
+        <p>Munduk is in the highlands of North Bali, about 2 to 2.5 hours by car from Ubud and around 3 hours from the airport and the south coast, depending on traffic. The road climbs past Lake Beratan at Bedugul, then follows the rim above Lake Buyan and Lake Tamblingan. Most travelers come by private driver; ask Ketut if you'd like help arranging one.</p>
+      </div>
+
+      <div class="maps">
+        <div class="map-embed" data-src={embed}>
+          <AreaMap />
+          <button type="button" class="btn btn-outline load-map"><Icon name="pin" size={20} /> Show Google Map</button>
+        </div>
+        <a href={mapsLink} target="_blank" rel="noopener" class="open">Open in Google Maps <Icon name="arrow" size={18} /></a>
+      </div>
+    </div>
+  </section>
+</Base>
+<script>
+  // Click-to-load Google Map keeps ~500 KB of third-party code off the page until it's wanted.
+  const box = document.querySelector<HTMLElement>('.map-embed');
+  box?.querySelector('.load-map')?.addEventListener('click', () => {
+    const iframe = document.createElement('iframe');
+    iframe.src = box.dataset.src!;
+    iframe.title = 'Google Map of Munduk, North Bali';
+    iframe.loading = 'lazy';
+    iframe.referrerPolicy = 'no-referrer-when-downgrade';
+    iframe.allowFullscreen = true;
+    box.replaceChildren(iframe);
+  });
+</script>
+<style>
+  .cols { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 48px; align-items: start; }
+  .details { display: grid; gap: 18px; }
+  .details h2 { font-size: var(--step-2); margin-top: 12px; }
+  .list { list-style: none; display: grid; gap: 16px; }
+  .list li { display: grid; grid-template-columns: 28px 1fr; gap: 12px; align-items: start; }
+  .list :global(svg) { color: var(--lake); margin-top: 3px; }
+  address { font-style: normal; }
+  .area { list-style: none; display: flex; flex-wrap: wrap; gap: 8px; }
+  .maps { display: grid; gap: 12px; position: sticky; top: 16px; }
+  .map-embed { position: relative; display: grid; }
+  .map-embed :global(iframe) { width: 100%; aspect-ratio: 4 / 3; border: 0; border-radius: 8px; }
+  .load-map { position: absolute; top: 16px; right: 16px; background: var(--paper); }
+  .open { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
+  @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } .maps { position: static; } }
+</style>

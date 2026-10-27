@@ -1,7 +1,7 @@
 # Step 1 — Research and Options
 
 Project: website for **Ketut Darma**, local hiking guide in Munduk, North Bali (Twin Lakes: Buyan and Tamblingan).
-Goal: mobile visitors → WhatsApp bookings. Status: **awaiting approval before build.**
+Goal: mobile visitors → WhatsApp bookings. Status: **approved** (Direction B, Astro + Pages CMS + Cloudflare Pages; domain tripwithdarma.my.id).
 
 ---
 

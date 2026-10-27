@@ -1,0 +1,207 @@
+/* Trail Map design system: canopy green, lake blue, mist ground, trail-marker orange. */
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url(/fonts/source-sans-3-latin-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url(/fonts/source-sans-3-latin-ext-wght-normal.woff2) format('woff2-variations');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Source Sans 3';
+  font-style: italic;
+  font-display: swap;
+  font-weight: 200 900;
+  src: url(/fonts/source-sans-3-latin-wght-italic.woff2) format('woff2-variations');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(/fonts/barlow-condensed-latin-700-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url(/fonts/barlow-condensed-latin-ext-700-normal.woff2) format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+1E00-1E9F, U+1EF2-1EFF, U+20A0-20AB, U+20AD-20C0, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Barlow Condensed';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 600;
+  src: url(/fonts/barlow-condensed-latin-600-normal.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212, U+FEFF, U+FFFD;
+}
+/* Metric-matched fallback keeps layout steady while the web font loads (CLS). */
+@font-face {
+  font-family: 'Barlow Fallback';
+  src: local('Arial');
+  size-adjust: 80%;
+  ascent-override: 112%;
+  descent-override: 28%;
+}
+
+:root {
+  --canopy: #1e3b2c;
+  --canopy-deep: #142a1f;
+  --lake: #2c6e7f;
+  --lake-soft: #d6e6ea;
+  --mist: #f2f5f1;
+  --paper: #ffffff;
+  --basalt: #151b17;
+  --muted: #4d5a52;
+  --line: #d3dcd5;
+  --marker: #e4572e;
+  --marker-soft: #fbe3db;
+  --marker-ink: #b53d1a; /* orange for small text on light grounds (5.8:1) */
+  --marker-light: #f59b76; /* orange for small text on canopy green (5.7:1) */
+  --wa: #25d366;
+  --wa-hover: #1ebe5b;
+
+  --display: 'Barlow Condensed', 'Barlow Fallback', 'Arial Narrow', Arial, sans-serif;
+  --body: 'Source Sans 3', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+
+  --step--1: 0.875rem;
+  --step-0: 1.0625rem;
+  --step-1: 1.25rem;
+  --step-2: clamp(1.5rem, 1.2rem + 1.2vw, 1.875rem);
+  --step-3: clamp(1.9rem, 1.4rem + 2.2vw, 2.75rem);
+  --step-4: clamp(2.4rem, 1.6rem + 3.6vw, 4rem);
+
+  --radius: 6px;
+  --gutter: max(16px, env(safe-area-inset-left, 0px));
+  --max: 1160px;
+  --sticky-h: 0px;
+  color-scheme: light;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; scroll-padding-top: 80px; }
+body {
+  margin: 0;
+  background: var(--mist);
+  color: var(--basalt);
+  font: 400 var(--step-0) / 1.6 var(--body);
+  text-rendering: optimizeLegibility;
+  padding-bottom: var(--sticky-h);
+}
+img, svg, picture { display: block; max-width: 100%; }
+img { height: auto; }
+h1, h2, h3, h4 {
+  font-family: var(--display);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.005em;
+  margin: 0;
+  text-wrap: balance;
+}
+h1 { font-size: var(--step-4); text-transform: uppercase; }
+h2 { font-size: var(--step-3); text-transform: uppercase; color: var(--canopy); }
+h3 { font-size: var(--step-2); }
+h4 { font-size: var(--step-1); }
+p { margin: 0; }
+a { color: var(--lake); text-underline-offset: 3px; }
+a:hover { color: var(--canopy); }
+:focus-visible { outline: 3px solid var(--marker); outline-offset: 2px; border-radius: 2px; }
+ul, ol { margin: 0; padding: 0; }
+
+.container {
+  width: 100%;
+  max-width: calc(var(--max) + 2 * 16px);
+  margin-inline: auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.section { padding-block: clamp(48px, 8vw, 96px); }
+.section-head { display: grid; gap: 12px; margin-bottom: clamp(24px, 4vw, 40px); max-width: 720px; }
+.section-head p:not(.eyebrow) { color: var(--muted); font-size: var(--step-1); }
+.eyebrow {
+  font: 600 var(--step--1) / 1 var(--body);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--marker-ink);
+}
+.hero .eyebrow, .page-hero .eyebrow, .final-cta .eyebrow { color: var(--marker-light); }
+.prose { max-width: 68ch; display: grid; gap: 1em; }
+.prose h2 { font-size: var(--step-2); margin-top: 0.8em; }
+.prose h3 { font-size: var(--step-1); margin-top: 0.6em; color: var(--canopy); }
+.prose ul, .prose ol { padding-left: 1.3em; display: grid; gap: 0.35em; }
+.prose blockquote { margin: 0; padding-left: 16px; border-left: 4px solid var(--lake); color: var(--muted); }
+.prose table { border-collapse: collapse; width: 100%; font-size: var(--step--1); }
+.prose th, .prose td { border-bottom: 1px solid var(--line); padding: 8px; text-align: left; }
+.prose img { border-radius: var(--radius); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font: 700 var(--step-0) / 1.1 var(--body);
+  text-decoration: none;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, color 0.15s, border-color 0.15s;
+}
+.btn-wa { background: var(--wa); color: var(--basalt); }
+.btn-wa:hover { background: var(--wa-hover); color: var(--basalt); }
+.btn-ghost { border-color: currentColor; color: inherit; background: transparent; }
+.btn-ghost:hover { background: rgb(255 255 255 / 0.12); color: inherit; }
+.btn-outline { border-color: var(--canopy); color: var(--canopy); background: transparent; }
+.btn-outline:hover { background: var(--canopy); color: var(--mist); }
+.btn svg { width: 22px; height: 22px; flex: none; }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font: 600 var(--step--1) / 1 var(--body);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 7px 10px;
+  border-radius: 4px;
+  background: var(--paper);
+  color: var(--basalt);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.chip svg { width: 15px; height: 15px; }
+.chip-easy { background: var(--lake-soft); border-color: transparent; }
+.chip-moderate { background: var(--marker-soft); border-color: transparent; }
+.chip-challenging { background: var(--marker); border-color: transparent; color: var(--basalt); }
+
+.visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+}
+.skip-link { position: absolute; left: 16px; top: -100px; z-index: 100; background: var(--paper); padding: 10px 14px; }
+.skip-link:focus { top: 16px; }
+
+.grid-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 24px; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+}
+
+/* Shared page header band */
+.page-hero { position: relative; overflow: hidden; background: var(--canopy); color: #d9e6dc; }
+.page-hero .inner { position: relative; display: grid; gap: 14px; padding-block: clamp(36px, 6vw, 72px); }
+.page-hero h1 { color: #fff; }
+.page-hero p { font-size: var(--step-1); max-width: 60ch; }

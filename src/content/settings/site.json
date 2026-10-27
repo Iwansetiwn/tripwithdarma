@@ -1,0 +1,43 @@
+{
+  "businessName": "Trip with Darma",
+  "guideName": "Ketut Darma",
+  "tagline": "Private hiking guide in Munduk, North Bali",
+  "whatsapp": "",
+  "phoneDisplay": "",
+  "email": "",
+  "address": {
+    "street": "",
+    "village": "Munduk",
+    "district": "Banjar",
+    "regency": "Buleleng",
+    "province": "Bali",
+    "postalCode": "81152",
+    "country": "ID"
+  },
+  "latitude": "",
+  "longitude": "",
+  "serviceArea": ["Munduk", "Lake Buyan", "Lake Tamblingan", "Gobleg", "Wanagiri", "Bedugul", "Lovina"],
+  "openingHours": "Mo-Su 07:00-18:00",
+  "mapQuery": "Munduk, Banjar, Buleleng Regency, Bali, Indonesia",
+  "tripadvisorUrl": "",
+  "googleBusinessUrl": "",
+  "instagramUrl": "",
+  "facebookUrl": "",
+  "ga4Id": "",
+  "googleSiteVerification": "",
+  "defaultWhatsappMessage": "Hi Ketut, I found your website and I'd like to ask about a hike in Munduk.",
+  "home": {
+    "metaTitle": "Munduk Hiking Guide | Twin Lakes Treks with Ketut Darma",
+    "metaDescription": "Private hikes around Lake Buyan, Lake Tamblingan and the Munduk waterfalls with Ketut Darma, a local guide in North Bali. Book easily on WhatsApp.",
+    "heroHeadline": "Hike Munduk's Twin Lakes with a local guide",
+    "heroText": "Private treks through the forest around Lake Buyan and Lake Tamblingan, down to Munduk's waterfalls and through the clove gardens between the villages. Small groups, your pace, booked on WhatsApp.",
+    "heroImage": "",
+    "heroImageAlt": "",
+    "whyChoose": [
+      { "title": "A local guide from the highlands", "text": "Ketut lives and works around Munduk. He knows which trails are dry after rain, where the views open up, and which warung serves the best coffee." },
+      { "title": "Private, never a crowd", "text": "Every hike is just you and your group. Walk at your own pace, stop for photos, and ask anything along the way." },
+      { "title": "Clear prices, no surprises", "text": "Each hike lists what's included and what isn't, so you know the price before you message." },
+      { "title": "Easy booking on WhatsApp", "text": "Send your date and group size. Ketut replies personally to confirm your hike and pickup time." }
+    ]
+  }
+}

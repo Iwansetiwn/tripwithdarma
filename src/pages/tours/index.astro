@@ -1,0 +1,49 @@
+---
+import Base from '../../layouts/Base.astro';
+import TourCard from '../../components/TourCard.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Contours from '../../components/Contours.astro';
+import { getTours, getSite, getGuide } from '../../lib/site';
+import { breadcrumbSchema, businessSchema, graph } from '../../lib/schema';
+
+const tours = await getTours();
+const site = await getSite();
+const guide = await getGuide();
+const url = new URL('/tours/', Astro.site).href;
+const schema = graph(
+  businessSchema(site, guide, Astro.site!),
+  breadcrumbSchema([{ name: 'Home', url: Astro.site!.href }, { name: 'Hikes', url }]),
+  {
+    '@type': 'ItemList',
+    itemListElement: tours.map((t, i) => ({ '@type': 'ListItem', position: i + 1, url: new URL(`/tours/${t.id}/`, Astro.site).href, name: t.data.title })),
+  },
+);
+---
+<Base
+  title="Munduk Trekking Tours | Private Hikes with a Local Guide"
+  description="All private hikes with Ketut Darma in Munduk: Twin Lakes forest trek, Munduk waterfalls and full-day routes. Duration, difficulty and price for each."
+  schema={schema}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Hikes' }]} inverted />
+      <h1>Munduk trekking tours</h1>
+      <p>Private hikes around the Twin Lakes and Munduk's waterfalls with a local guide. Compare duration, difficulty and price, then book on WhatsApp.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container grid-cards">
+      {tours.map((t) => <TourCard tour={t} headingLevel="h2" />)}
+    </div>
+    <div class="container custom">
+      <h2>Want something different?</h2>
+      <p>Ketut can adapt any hike or plan a custom route: sunrise at the lakes, a shorter walk for kids, or a longer day. Ask on WhatsApp.</p>
+    </div>
+  </section>
+</Base>
+<style>
+  .custom { margin-top: 48px; display: grid; gap: 10px; }
+  .custom h2 { font-size: var(--step-2); }
+  .custom p { max-width: 62ch; color: var(--muted); }
+</style>

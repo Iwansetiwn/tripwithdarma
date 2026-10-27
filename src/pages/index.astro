@@ -1,0 +1,202 @@
+---
+import Base from '../layouts/Base.astro';
+import Photo from '../components/Photo.astro';
+import Contours from '../components/Contours.astro';
+import TourCard from '../components/TourCard.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import Reviews from '../components/Reviews.astro';
+import FaqList from '../components/FaqList.astro';
+import PostCard from '../components/PostCard.astro';
+import AreaMap from '../components/AreaMap.astro';
+import Icon from '../components/Icon.astro';
+import { getSite, getGuide, getTours, getPosts, getFaq, getReviews } from '../lib/site';
+import { businessSchema, personSchema, websiteSchema, graph } from '../lib/schema';
+import { ogImageUrl } from '../lib/og';
+
+const site = await getSite();
+const guide = await getGuide();
+const tours = (await getTours()).filter((t) => t.data.featured);
+const posts = (await getPosts()).slice(0, 3);
+const faq = (await getFaq()).filter((q) => q.onHome);
+const reviewData = await getReviews();
+const h = site.home;
+const og = await ogImageUrl(h.heroImage);
+const schema = graph(businessSchema(site, guide, Astro.site!, og), personSchema(guide, Astro.site!), websiteSchema(site, Astro.site!));
+const icons = ['pin', 'users', 'check', 'chat'] as const;
+---
+<Base title={h.metaTitle} description={h.metaDescription} image={og} imageAlt={h.heroImageAlt} schema={schema}>
+  <section class="hero">
+    <Contours opacity={0.16} />
+    <div class="container hero-grid">
+      <div class="hero-text">
+        <p class="eyebrow">Munduk · Lake Buyan · Lake Tamblingan</p>
+        <h1>{h.heroHeadline}</h1>
+        <p class="lead">{h.heroText}</p>
+        <div class="hero-actions">
+          <WhatsAppButton placement="hero" />
+          <a href="/tours/" class="btn btn-ghost">See the hikes</a>
+        </div>
+        {(reviewData.rating || site.tripadvisorUrl) && (
+          <p class="proof">
+            <Icon name="star" size={18} />
+            {reviewData.rating ? <>Rated <strong>{reviewData.rating.toFixed(1)}/5</strong>{reviewData.reviewCount && ` by ${reviewData.reviewCount} guests`} on </> : 'Reviewed by guests on '}
+            {site.tripadvisorUrl ? <a href={site.tripadvisorUrl} target="_blank" rel="noopener">Tripadvisor</a> : 'Tripadvisor'}
+          </p>
+        )}
+      </div>
+      <div class="hero-photo">
+        <Photo src={h.heroImage} alt={h.heroImageAlt ?? ''} eager sizes="(max-width: 860px) 100vw, 560px" aspect="4 / 5" widths={[480, 720, 960, 1120]} label="Hero photo coming soon" />
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Hikes</p>
+        <h2>Choose your Munduk hike</h2>
+        <p>Every hike is private, with a local guide and a clear price. Pick one and send Ketut your date on WhatsApp.</p>
+      </div>
+      <div class="grid-cards">
+        {tours.map((t) => <TourCard tour={t} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section why">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Why hike with Ketut</p>
+        <h2>A local guide who knows every trail</h2>
+      </div>
+      <ul class="why-grid">
+        {h.whyChoose.map((item, i) => (
+          <li>
+            <span class="why-icon"><Icon name={icons[i % icons.length]} size={26} /></span>
+            <h3>{item.title}</h3>
+            <p>{item.text}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container meet">
+      <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} sizes="(max-width: 860px) 100vw, 460px" aspect="4 / 5" widths={[400, 640, 920]} label="Portrait of Ketut coming soon" />
+      <div class="meet-text">
+        <p class="eyebrow">Meet your guide</p>
+        <h2>{guide.name}</h2>
+        <p class="lead-dark">{guide.shortIntro}</p>
+        <ul class="facts">
+          {guide.yearsGuiding && <li><Icon name="badge" /> {guide.yearsGuiding}+ years guiding</li>}
+          {guide.languages.length > 0 && <li><Icon name="language" /> Speaks {guide.languages.join(', ')}</li>}
+          {guide.certifications.map((c) => <li><Icon name="check" /> {c}</li>)}
+        </ul>
+        <a href="/meet-your-guide/" class="btn btn-outline">Read Ketut's story</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section reviews-band">
+    <div class="container">
+      <div class="section-head">
+        <p class="eyebrow">Reviews</p>
+        <h2>What hikers say</h2>
+      </div>
+      <Reviews limit={3} />
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container map-grid">
+      <div class="section-head">
+        <p class="eyebrow">Where we hike</p>
+        <h2>The Munduk highlands</h2>
+        <p>Munduk sits at the edge of the old caldera in North Bali's highlands. Above the village lie two crater lakes, Buyan and Tamblingan, wrapped in forest. Below it, rivers drop through clove and coffee gardens over a chain of waterfalls.</p>
+        <a href="/contact/" class="more">Location &amp; how to get here <Icon name="arrow" size={18} /></a>
+      </div>
+      <AreaMap />
+    </div>
+  </section>
+
+  {faq.length > 0 && (
+    <section class="section faq-band">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Good to know</p>
+          <h2>Questions before you hike</h2>
+        </div>
+        <FaqList items={faq} />
+        <p class="faq-more"><a href="/faq/">All questions <Icon name="arrow" size={18} /></a></p>
+      </div>
+    </section>
+  )}
+
+  {posts.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <p class="eyebrow">Hiking guides</p>
+          <h2>Plan your Munduk trip</h2>
+        </div>
+        <div class="grid-cards">
+          {posts.map((p) => <PostCard post={p} />)}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="final-cta">
+    <Contours opacity={0.14} />
+    <div class="container final-inner">
+      <h2>Ready for the Twin Lakes?</h2>
+      <p>Send Ketut your date and group size. He'll reply personally on WhatsApp.</p>
+      <WhatsAppButton placement="final-cta" label="Message Ketut on WhatsApp" />
+    </div>
+  </section>
+</Base>
+<style>
+  .hero { position: relative; overflow: hidden; background: var(--canopy); color: var(--mist); }
+  .hero-grid { position: relative; display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 48px; align-items: center; padding-block: clamp(40px, 7vw, 88px); }
+  .hero-text { display: grid; gap: 20px; }
+  .hero h1 { color: #fff; }
+  .lead { font-size: var(--step-1); color: #d9e6dc; max-width: 54ch; }
+  .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; }
+  .proof { display: flex; align-items: center; gap: 8px; font-size: var(--step--1); color: #cfe0d5; }
+  .proof :global(svg) { color: var(--marker); }
+  .proof a { color: #fff; }
+  .hero-photo { max-width: 560px; justify-self: end; width: 100%; }
+  .hero-photo :global(.photo) { border-radius: 10px; box-shadow: 0 20px 40px rgb(0 0 0 / 0.25); }
+
+  .why { background: var(--paper); border-block: 1px solid var(--line); }
+  .why-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 240px), 1fr)); gap: 28px; }
+  .why-grid li { display: grid; gap: 10px; align-content: start; }
+  .why-icon { width: 48px; height: 48px; display: grid; place-items: center; border-radius: 8px; background: var(--marker-soft); color: var(--marker); }
+  .why-grid h3 { font-size: 1.45rem; text-transform: uppercase; color: var(--canopy); }
+  .why-grid p { color: var(--muted); }
+
+  .meet { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1fr); gap: 48px; align-items: center; }
+  .meet-text { display: grid; gap: 18px; justify-items: start; }
+  .lead-dark { font-size: var(--step-1); max-width: 56ch; }
+  .facts { list-style: none; display: grid; gap: 8px; }
+  .facts li { display: flex; align-items: center; gap: 10px; }
+  .facts :global(svg) { color: var(--lake); }
+
+  .reviews-band, .faq-band { background: var(--paper); border-block: 1px solid var(--line); }
+  .map-grid { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 40px; align-items: center; }
+  .more, .faq-more a { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
+  .faq-more { margin-top: 20px; }
+
+  .final-cta { position: relative; overflow: hidden; background: var(--canopy-deep); color: var(--mist); padding-block: clamp(56px, 9vw, 104px); }
+  .final-inner { position: relative; display: grid; gap: 18px; justify-items: center; text-align: center; }
+  .final-cta h2 { color: #fff; font-size: var(--step-4); }
+  .final-cta p { font-size: var(--step-1); color: #d9e6dc; }
+
+  @media (max-width: 860px) {
+    .hero-grid, .meet, .map-grid { grid-template-columns: 1fr; }
+    .hero-photo { justify-self: stretch; max-width: none; }
+    .hero-photo :global(.photo) { aspect-ratio: 4 / 3 !important; }
+    .hero-photo:has(:global(.placeholder)) { display: none; }
+  }
+</style>

@@ -1,0 +1,5 @@
+# Cloudflare Pages redirects. Format: /old-path /new-path 301
+/about/ /meet-your-guide/ 301
+/about /meet-your-guide/ 301
+/hikes/ /tours/ 301
+/hikes /tours/ 301

@@ -1,0 +1,29 @@
+---
+import Icon from './Icon.astro';
+import { getSite, waLink } from '../lib/site';
+
+interface Props {
+  message?: string;
+  label?: string;
+  tour?: string;
+  placement: string;
+  variant?: 'wa' | 'outline';
+  class?: string;
+  id?: string;
+}
+const site = await getSite();
+const { message = site.defaultWhatsappMessage, label = 'Book on WhatsApp', tour = '', placement, variant = 'wa', class: cls, id } = Astro.props;
+---
+<a
+  id={id}
+  class:list={['btn', variant === 'wa' ? 'btn-wa' : 'btn-outline', cls]}
+  href={waLink(site.whatsapp, message)}
+  target="_blank"
+  rel="noopener"
+  data-wa
+  data-wa-tour={tour}
+  data-wa-placement={placement}
+>
+  <Icon name="whatsapp" size={22} />
+  <span>{label}</span>
+</a>

@@ -1,0 +1,76 @@
+{
+  "items": [
+    {
+      "question": "How do I book a hike?",
+      "answer": "Tap any \"Book on WhatsApp\" button and send Ketut your preferred date, the hike you'd like, and how many people are in your group. He replies personally to confirm availability, the price for your group and your pickup time. There's no online payment.",
+      "category": "Booking",
+      "onHome": true
+    },
+    {
+      "question": "How far in advance should I book?",
+      "answer": "A few days ahead is usually enough. In July, August and around Christmas and New Year, message as early as you can. Last-minute requests for the next morning are often possible, so just ask.",
+      "category": "Booking",
+      "onHome": false
+    },
+    {
+      "question": "Are the hikes private?",
+      "answer": "Yes. Every hike is private for your group only, so you can walk at your own pace and stop whenever you like.",
+      "category": "Booking",
+      "onHome": false
+    },
+    {
+      "question": "What is the best time of year to hike around Munduk?",
+      "answer": "The dry season, roughly April to October, has the firmest trails and the clearest mornings over the lakes. You can hike all year, though. In the wet season (about November to March) mornings are usually the driest part of the day, and the forest and waterfalls are at their greenest.",
+      "category": "Weather",
+      "onHome": true
+    },
+    {
+      "question": "What happens if it rains?",
+      "answer": "Light rain is normal in the highlands and hikes usually go ahead. Ketut may change the route to avoid slippery sections. If heavy rain makes a trail unsafe, he'll suggest another time or a different route.",
+      "category": "Weather",
+      "onHome": false
+    },
+    {
+      "question": "How fit do I need to be?",
+      "answer": "If you can walk for two to three hours with some uphill sections and uneven steps, you'll enjoy the easy and moderate hikes. Each hike lists its difficulty. Tell Ketut about any knee, back or heart problems so he can suggest the right route.",
+      "category": "Fitness",
+      "onHome": true
+    },
+    {
+      "question": "Can children join?",
+      "answer": "Often, yes. It depends on the hike and the child. Message Ketut with your children's ages and he'll recommend a suitable route.",
+      "category": "Fitness",
+      "onHome": false
+    },
+    {
+      "question": "What should I wear?",
+      "answer": "Shoes with good grip (trail shoes or sneakers with a deep tread, not flip-flops), light quick-dry clothes, and a light rain jacket. Munduk is cooler than the coast, especially in the early morning. For temple visits, shoulders and knees should be covered; a sarong is often provided at the temple.",
+      "category": "What to wear",
+      "onHome": true
+    },
+    {
+      "question": "What should I bring?",
+      "answer": "A small backpack with water, sunscreen, insect repellent, a rain jacket or poncho, a phone in a waterproof bag, and some cash for entrance fees and snacks. Swimwear and a small towel if you'd like to swim at a waterfall.",
+      "category": "What to wear",
+      "onHome": false
+    },
+    {
+      "question": "What is your cancellation policy?",
+      "answer": "Plans change, so just let Ketut know on WhatsApp as early as possible. Since nothing is paid online, there's nothing to refund. If weather makes a hike unsafe, Ketut will offer another date.",
+      "category": "Cancellations",
+      "onHome": true
+    },
+    {
+      "question": "Do you offer hotel pickup?",
+      "answer": "Each hike lists its pickup or meeting details. If you're staying in Munduk or nearby, tell Ketut where and he'll confirm the meeting point or pickup time.",
+      "category": "Pickup & meeting point",
+      "onHome": false
+    },
+    {
+      "question": "How do I get to Munduk?",
+      "answer": "Munduk is in the highlands of North Bali, roughly 2 to 2.5 hours by car from Ubud and about 3 hours from the airport and the south coast, depending on traffic. Most travelers come by private driver. Ask Ketut if you need help arranging transport.",
+      "category": "Pickup & meeting point",
+      "onHome": false
+    }
+  ]
+}

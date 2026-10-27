@@ -1,0 +1,63 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Contours from '../components/Contours.astro';
+import FaqList from '../components/FaqList.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { getFaq } from '../lib/site';
+import { breadcrumbSchema, faqSchema, graph } from '../lib/schema';
+
+const items = await getFaq();
+const categories = [...new Set(items.map((i) => i.category))];
+const url = new URL('/faq/', Astro.site).href;
+const schema = graph(faqSchema(items), breadcrumbSchema([{ name: 'Home', url: Astro.site!.href }, { name: 'FAQ', url }]));
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z]+/g, '-').replace(/^-|-$/g, '');
+---
+<Base
+  title="Munduk Hiking FAQ | Booking, Weather, Fitness & What to Wear"
+  description="Answers before you hike in Munduk: how to book on WhatsApp, the best season, rain, fitness level, what to wear and bring, cancellations and pickup."
+  schema={schema}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'FAQ' }]} inverted />
+      <h1>Questions &amp; answers</h1>
+      <p>Everything hikers usually ask before a Twin Lakes or waterfall hike.</p>
+    </div>
+  </section>
+  <div class="container section layout">
+    <nav aria-label="FAQ topics" class="topics">
+      <ul>{categories.map((c) => <li><a href={`#${slug(c)}`}>{c}</a></li>)}</ul>
+    </nav>
+    <div class="groups">
+      {categories.map((c) => (
+        <section id={slug(c)} aria-labelledby={`h-${slug(c)}`}>
+          <h2 id={`h-${slug(c)}`}>{c}</h2>
+          <FaqList items={items.filter((i) => i.category === c)} />
+        </section>
+      ))}
+      <div class="ask">
+        <h2>Still wondering?</h2>
+        <p>Ask Ketut directly. He usually replies the same day.</p>
+        <WhatsAppButton placement="faq" label="Ask on WhatsApp" />
+      </div>
+    </div>
+  </div>
+</Base>
+<style>
+  .layout { display: grid; grid-template-columns: 220px minmax(0, 1fr); gap: 48px; align-items: start; }
+  .topics { position: sticky; top: 16px; }
+  .topics ul { list-style: none; display: grid; gap: 4px; }
+  .topics a { display: block; padding: 8px 0; font: 700 1.15rem/1.1 var(--display); text-transform: uppercase; text-decoration: none; color: var(--canopy); }
+  .topics a:hover { color: var(--marker-ink); }
+  .groups { display: grid; gap: 44px; }
+  .groups h2 { font-size: var(--step-2); margin-bottom: 14px; }
+  .ask { display: grid; gap: 12px; justify-items: start; }
+  @media (max-width: 860px) {
+    .layout { grid-template-columns: 1fr; gap: 24px; }
+    .topics { position: static; }
+    .topics ul { display: flex; flex-wrap: wrap; gap: 8px; }
+    .topics a { padding: 8px 12px; background: var(--paper); border: 1px solid var(--line); border-radius: 999px; font-size: 1rem; }
+  }
+</style>

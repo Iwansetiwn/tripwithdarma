@@ -1,0 +1,69 @@
+---
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
+
+const nav = [
+  { href: '/tours/', label: 'Hikes' },
+  { href: '/meet-your-guide/', label: 'Meet Ketut' },
+  { href: '/reviews/', label: 'Reviews' },
+  { href: '/blog/', label: 'Guides' },
+  { href: '/faq/', label: 'FAQ' },
+  { href: '/contact/', label: 'Contact' },
+];
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || (href !== '/' && path.startsWith(href));
+---
+<header class="site-header">
+  <div class="container bar">
+    <a href="/" class="home"><Logo /></a>
+    <nav aria-label="Main" class="desktop-nav">
+      <ul>
+        {nav.map((item) => (
+          <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+        ))}
+      </ul>
+    </nav>
+    <WhatsAppButton placement="header" label="WhatsApp" class="header-cta" />
+    <details class="mobile-nav">
+      <summary aria-label="Menu"><Icon name="menu" size={26} /><span class="visually-hidden">Menu</span></summary>
+      <nav aria-label="Mobile">
+        <ul>
+          {nav.map((item) => (
+            <li><a href={item.href} aria-current={isActive(item.href) ? 'page' : undefined}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
+<style>
+  .site-header { background: var(--paper); border-bottom: 1px solid var(--line); position: relative; z-index: 20; }
+  .bar { display: flex; align-items: center; gap: 16px; min-height: 68px; }
+  .home { text-decoration: none; margin-right: auto; }
+  .desktop-nav ul { display: flex; gap: 4px; list-style: none; }
+  .desktop-nav a, .mobile-nav a {
+    display: block; padding: 10px 12px; text-decoration: none; color: var(--basalt);
+    font: 700 1.15rem/1 var(--display); text-transform: uppercase; letter-spacing: 0.03em; border-radius: 4px;
+  }
+  .desktop-nav a:hover, .mobile-nav a:hover { color: var(--lake); }
+  a[aria-current='page'] { color: var(--marker-ink); box-shadow: inset 0 -3px 0 var(--marker); }
+  .bar :global(.header-cta) { min-height: 42px; padding: 8px 16px; font-size: 0.95rem; }
+  .mobile-nav { display: none; }
+  .mobile-nav summary { list-style: none; cursor: pointer; padding: 8px; border-radius: 4px; color: var(--canopy); }
+  .mobile-nav summary::-webkit-details-marker { display: none; }
+  .mobile-nav nav {
+    position: absolute; left: 0; right: 0; top: 100%; background: var(--paper); border-bottom: 1px solid var(--line);
+    box-shadow: 0 12px 24px rgb(21 27 23 / 0.12);
+    padding: 8px max(16px, env(safe-area-inset-right, 0px)) 16px max(16px, env(safe-area-inset-left, 0px));
+  }
+  .mobile-nav ul { list-style: none; display: grid; }
+  .mobile-nav a { padding: 14px 4px; font-size: 1.4rem; border-bottom: 1px solid var(--line); border-radius: 0; box-shadow: none; }
+  @media (max-width: 960px) {
+    .desktop-nav { display: none; }
+    .mobile-nav { display: block; }
+  }
+  @media (max-width: 760px) {
+    .bar :global(.header-cta) { display: none; }
+  }
+</style>

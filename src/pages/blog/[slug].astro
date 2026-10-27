@@ -1,0 +1,77 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render, getEntry } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Contours from '../../components/Contours.astro';
+import Photo from '../../components/Photo.astro';
+import TourCard from '../../components/TourCard.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import { getPosts, getGuide, getTours, formatDate } from '../../lib/site';
+import { articleSchema, personSchema, breadcrumbSchema, graph } from '../../lib/schema';
+import { ogImageUrl } from '../../lib/og';
+
+export const getStaticPaths = (async () => {
+  const posts = await getPosts();
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}) satisfies GetStaticPaths;
+
+const { post } = Astro.props;
+const d = post.data;
+const { Content } = await render(post);
+const guide = await getGuide();
+const url = new URL(`/blog/${post.id}/`, Astro.site).href;
+const og = await ogImageUrl(d.cover);
+const related = d.relatedTours.length
+  ? (await Promise.all(d.relatedTours.map((id) => getEntry('tours', id)))).filter((t) => t && !t.data.draft)
+  : (await getTours()).slice(0, 2);
+const schema = graph(
+  articleSchema(post, url, og),
+  personSchema(guide, Astro.site!),
+  breadcrumbSchema([
+    { name: 'Home', url: Astro.site!.href },
+    { name: 'Guides', url: new URL('/blog/', Astro.site).href },
+    { name: d.title, url },
+  ]),
+);
+---
+<Base title={d.metaTitle ?? `${d.title} | Trip with Darma`} description={d.description} image={og} imageAlt={d.coverAlt} type="article" schema={schema} publishedTime={d.date}>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Guides', href: '/blog/' }, { name: d.title }]} inverted />
+      <h1>{d.title}</h1>
+      <p class="meta">
+        By <a href="/meet-your-guide/">{guide.name}</a> ·
+        <time datetime={d.date.toISOString()}>{formatDate(d.date)}</time>
+        {d.updated && <> · Updated <time datetime={d.updated.toISOString()}>{formatDate(d.updated)}</time></>}
+      </p>
+    </div>
+  </section>
+  <article class="container section post">
+    {d.cover && <Photo src={d.cover} alt={d.coverAlt ?? ''} eager sizes="(max-width: 860px) 100vw, 820px" aspect="16 / 9" widths={[480, 820, 1200, 1640]} />}
+    <div class="prose"><Content /></div>
+    <aside class="cta">
+      <h2>Hike it with a local guide</h2>
+      <p>Ketut guides private hikes around the Twin Lakes and Munduk's waterfalls. Send your date on WhatsApp.</p>
+      <WhatsAppButton placement="blog-post" label="Ask Ketut on WhatsApp" />
+    </aside>
+  </article>
+  {related.length > 0 && (
+    <section class="section band">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Hikes</p><h2>Hikes mentioned in this guide</h2></div>
+        <div class="grid-cards">{related.map((t) => t && <TourCard tour={t} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>
+<style>
+  .meta { font-size: var(--step-0) !important; }
+  .meta a { color: #fff; }
+  .post { display: grid; gap: 36px; max-width: 860px; }
+  .prose { font-size: 1.125rem; }
+  .cta { background: var(--paper); border: 1px solid var(--line); border-left: 6px solid var(--marker); border-radius: 8px; padding: 24px; display: grid; gap: 12px; justify-items: start; }
+  .cta h2 { font-size: var(--step-2); }
+  .band { background: var(--paper); border-block: 1px solid var(--line); }
+</style>

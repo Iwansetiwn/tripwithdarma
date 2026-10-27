@@ -1,0 +1,73 @@
+---
+import Icon from './Icon.astro';
+import { getReviews, getSite } from '../lib/site';
+interface Props { limit?: number; tour?: string; showAllLink?: boolean }
+const { limit, tour, showAllLink = true } = Astro.props;
+const site = await getSite();
+const data = await getReviews();
+let list = data.reviews.filter((r) => (tour ? !r.tour || r.tour === tour : r.featured));
+if (limit) list = list.slice(0, limit);
+---
+<div class="reviews">
+  {(data.rating || site.tripadvisorUrl) && (
+    <p class="summary">
+      {data.rating && (
+        <span class="stars" aria-label={`Rated ${data.rating} out of 5 on Tripadvisor`}>
+          {Array.from({ length: 5 }, (_, i) => <Icon name="star" size={20} class={i < Math.round(data.rating ?? 0) ? 'on' : 'off'} />)}
+        </span>
+      )}
+      {data.rating && <strong>{data.rating.toFixed(1)} / 5</strong>}
+      {data.reviewCount && <span>from {data.reviewCount} reviews</span>}
+      {site.tripadvisorUrl && <a href={site.tripadvisorUrl} target="_blank" rel="noopener">Read all reviews on Tripadvisor</a>}
+    </p>
+  )}
+  {list.length > 0 ? (
+    <ul class="list">
+      {list.map((r) => (
+        <li>
+          <figure>
+            {r.rating && (
+              <span class="stars small" aria-label={`${r.rating} out of 5`}>
+                {Array.from({ length: 5 }, (_, i) => <Icon name="star" size={16} class={i < (r.rating ?? 0) ? 'on' : 'off'} />)}
+              </span>
+            )}
+            {r.title && <p class="rtitle">{r.title}</p>}
+            <blockquote><p>{r.text}</p></blockquote>
+            <figcaption>
+              <strong>{r.author}</strong>{r.from && `, ${r.from}`}
+              {r.date && <span class="date"> · {r.date}</span>}
+              {r.url && <> · <a href={r.url} target="_blank" rel="noopener nofollow">Read on Tripadvisor</a></>}
+            </figcaption>
+          </figure>
+        </li>
+      ))}
+    </ul>
+  ) : (
+    <div class="empty">
+      <p>Reviews from Ketut's guests are on Tripadvisor.</p>
+      {site.tripadvisorUrl ? (
+        <a class="btn btn-outline" href={site.tripadvisorUrl} target="_blank" rel="noopener">See reviews on Tripadvisor</a>
+      ) : (
+        <p class="note">Selected Tripadvisor reviews will appear here.</p>
+      )}
+    </div>
+  )}
+  {showAllLink && list.length > 0 && <a class="all" href="/reviews/">More reviews <Icon name="arrow" size={18} /></a>}
+</div>
+<style>
+  .reviews { display: grid; gap: 24px; }
+  .summary { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 14px; font-size: var(--step-1); }
+  .stars { display: inline-flex; gap: 2px; }
+  .stars :global(.on) { color: var(--marker); }
+  .stars :global(.off) { color: var(--line); }
+  .list { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 20px; }
+  figure { margin: 0; height: 100%; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 22px; display: grid; gap: 12px; align-content: start; }
+  .rtitle { font: 700 1.3rem/1.15 var(--display); text-transform: uppercase; color: var(--canopy); }
+  blockquote { margin: 0; }
+  blockquote p { display: -webkit-box; -webkit-line-clamp: 8; -webkit-box-orient: vertical; overflow: hidden; }
+  figcaption { font-size: var(--step--1); color: var(--muted); }
+  figcaption strong { color: var(--basalt); }
+  .empty { background: var(--paper); border: 1px dashed var(--line); border-radius: 8px; padding: 24px; display: grid; gap: 14px; justify-items: start; }
+  .note { color: var(--muted); font-size: var(--step--1); }
+  .all { display: inline-flex; gap: 6px; align-items: center; font-weight: 700; text-decoration: none; }
+</style>

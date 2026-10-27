@@ -1,0 +1,74 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Contours from '../components/Contours.astro';
+import Reviews from '../components/Reviews.astro';
+import { getReviews, getSite, getGuide } from '../lib/site';
+import { breadcrumbSchema, businessSchema, graph } from '../lib/schema';
+
+const data = await getReviews();
+const site = await getSite();
+const guide = await getGuide();
+const url = new URL('/reviews/', Astro.site).href;
+const schema = graph(
+  businessSchema(site, guide, Astro.site!),
+  breadcrumbSchema([{ name: 'Home', url: Astro.site!.href }, { name: 'Reviews', url }]),
+);
+---
+<Base
+  title="Reviews | Munduk Hiking with Ketut Darma on Tripadvisor"
+  description="Read real Tripadvisor reviews from hikers who explored the Twin Lakes and Munduk waterfalls with local guide Ketut Darma."
+  schema={schema}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Reviews' }]} inverted />
+      <h1>Hiker reviews</h1>
+      <p>Real reviews from Ketut's guests on Tripadvisor. Each one links back to the original.</p>
+    </div>
+  </section>
+  <section class="section">
+    <div class="container">
+      <Reviews showAllLink={false} />
+    </div>
+  </section>
+  {data.widgetCode && (
+    <section class="section band">
+      <div class="container">
+        <div class="section-head"><h2>Latest on Tripadvisor</h2></div>
+        <div class="ta-widget" data-widget={data.widgetCode}><p class="loading">Loading Tripadvisor reviews…</p></div>
+      </div>
+    </section>
+  )}
+</Base>
+<script>
+  // Tripadvisor's widget is third-party JavaScript: load it only when it scrolls into view.
+  const box = document.querySelector<HTMLElement>('.ta-widget');
+  if (box) {
+    const load = () => {
+      const tpl = document.createElement('template');
+      tpl.innerHTML = box.dataset.widget ?? '';
+      box.replaceChildren();
+      tpl.content.childNodes.forEach((node) => {
+        if (node instanceof HTMLScriptElement) {
+          const s = document.createElement('script');
+          for (const attr of Array.from(node.attributes)) s.setAttribute(attr.name, attr.value);
+          s.textContent = node.textContent;
+          box.appendChild(s);
+        } else {
+          box.appendChild(node.cloneNode(true));
+        }
+      });
+    };
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { io.disconnect(); load(); }
+    }, { rootMargin: '200px' });
+    io.observe(box);
+  }
+</script>
+<style>
+  .band { background: var(--paper); border-block: 1px solid var(--line); }
+  .ta-widget { min-height: 200px; }
+  .loading { color: var(--muted); }
+</style>

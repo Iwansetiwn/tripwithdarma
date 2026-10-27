@@ -1,0 +1,88 @@
+---
+import Base from '../layouts/Base.astro';
+import Breadcrumbs from '../components/Breadcrumbs.astro';
+import Contours from '../components/Contours.astro';
+import Photo from '../components/Photo.astro';
+import Icon from '../components/Icon.astro';
+import Reviews from '../components/Reviews.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import { getGuide, getSite } from '../lib/site';
+import { breadcrumbSchema, personSchema, businessSchema, graph } from '../lib/schema';
+import { ogImageUrl } from '../lib/og';
+
+const guide = await getGuide();
+const site = await getSite();
+const url = new URL('/meet-your-guide/', Astro.site).href;
+const og = await ogImageUrl(guide.photo);
+const paragraphs = guide.story.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const schema = graph(
+  { '@type': 'ProfilePage', url, mainEntity: personSchema(guide, Astro.site!, og) },
+  businessSchema(site, guide, Astro.site!),
+  breadcrumbSchema([{ name: 'Home', url: Astro.site!.href }, { name: 'Meet your guide', url }]),
+);
+---
+<Base
+  title={`Meet ${guide.name} | Your Local Munduk Hiking Guide`}
+  description={`${guide.name} is a local hiking guide in Munduk, North Bali. Read his story, the languages he speaks and why hikers choose him for the Twin Lakes.`}
+  image={og}
+  imageAlt={guide.photoAlt}
+  schema={schema}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Meet your guide' }]} inverted />
+      <p class="eyebrow">Meet your guide</p>
+      <h1>{guide.name}</h1>
+      <p>{guide.role}</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container about">
+      <div class="portrait">
+        <Photo src={guide.photo} alt={guide.photoAlt ?? guide.name} eager sizes="(max-width: 860px) 100vw, 440px" aspect="4 / 5" widths={[400, 640, 880]} label="Portrait of Ketut coming soon" />
+      </div>
+      <div class="story">
+        <p class="intro">{guide.shortIntro}</p>
+        <div class="prose">{paragraphs.map((p) => <p>{p}</p>)}</div>
+
+        <dl class="facts">
+          {guide.homeVillage && <div><dt>Home village</dt><dd>{guide.homeVillage}</dd></div>}
+          {guide.yearsGuiding && <div><dt>Guiding since</dt><dd>{guide.yearsGuiding}+ years</dd></div>}
+          {guide.languages.length > 0 && <div><dt>Languages</dt><dd>{guide.languages.join(', ')}</dd></div>}
+          {guide.certifications.length > 0 && <div><dt>Certifications</dt><dd>{guide.certifications.join(', ')}</dd></div>}
+        </dl>
+
+        {guide.promises.length > 0 && (
+          <ul class="promises">
+            {guide.promises.map((p) => <li><Icon name="check" size={20} />{p}</li>)}
+          </ul>
+        )}
+        <div><WhatsAppButton placement="about" label="Ask Ketut on WhatsApp" /></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Reviews</p><h2>What hikers say about Ketut</h2></div>
+      <Reviews limit={6} />
+    </div>
+  </section>
+</Base>
+<style>
+  .about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: 56px; align-items: start; }
+  .portrait { position: sticky; top: 16px; }
+  .story { display: grid; gap: 24px; }
+  .intro { font-size: var(--step-2); line-height: 1.35; color: var(--canopy); font-weight: 600; max-width: 40ch; }
+  .facts { margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 200px), 1fr)); gap: 12px; }
+  .facts div { background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+  dt { font-size: var(--step--1); color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  dd { margin: 4px 0 0; font: 700 1.3rem/1.2 var(--display); text-transform: uppercase; color: var(--canopy); }
+  .promises { list-style: none; display: grid; gap: 10px; }
+  .promises li { display: flex; gap: 10px; align-items: flex-start; }
+  .promises :global(svg) { color: var(--lake); margin-top: 3px; flex: none; }
+  .band { background: var(--paper); border-block: 1px solid var(--line); }
+  @media (max-width: 860px) { .about { grid-template-columns: 1fr; } .portrait { position: static; max-width: 460px; } }
+</style>

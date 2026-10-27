@@ -1,0 +1,15 @@
+---
+import Base from '../layouts/Base.astro';
+import Contours from '../components/Contours.astro';
+---
+<Base title="Page not found | Trip with Darma" description="This page doesn't exist. Find Munduk hikes, the Twin Lakes trek and more." noindex>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner">
+      <p class="eyebrow">Error 404</p>
+      <h1>Off the trail</h1>
+      <p>We couldn't find that page. Try one of these instead:</p>
+      <p><a class="btn btn-ghost" href="/tours/">See all hikes</a> <a class="btn btn-ghost" href="/">Home</a></p>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,31 @@
+---
+interface Props { steps: { time?: string; title: string; text?: string }[] }
+const { steps } = Astro.props;
+---
+<ol class="timeline">
+  {steps.map((s) => (
+    <li>
+      {s.time && <time>{s.time}</time>}
+      <div>
+        <h3>{s.title}</h3>
+        {s.text && <p>{s.text}</p>}
+      </div>
+    </li>
+  ))}
+</ol>
+<style>
+  .timeline { list-style: none; display: grid; gap: 0; position: relative; }
+  li { display: grid; grid-template-columns: 64px 1fr; gap: 16px; position: relative; padding-bottom: 22px; }
+  li::before {
+    content: ''; position: absolute; left: 76px; top: 8px; bottom: -8px; border-left: 2px dashed var(--line);
+  }
+  li:last-child::before { display: none; }
+  li > div { position: relative; padding-left: 20px; }
+  li > div::before {
+    content: ''; position: absolute; left: -9px; top: 4px; width: 14px; height: 14px; border-radius: 3px;
+    background: var(--marker); transform: rotate(45deg);
+  }
+  time { font: 700 1.25rem/1.2 var(--display); color: var(--lake); font-variant-numeric: tabular-nums; }
+  h3 { font-size: 1.35rem; text-transform: uppercase; color: var(--canopy); }
+  p { color: var(--muted); margin-top: 4px; }
+</style>

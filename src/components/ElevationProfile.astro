@@ -1,0 +1,29 @@
+---
+// Draws the hike's elevation profile from a list of metre readings along the route.
+interface Props { points: number[]; distanceKm?: number }
+const { points, distanceKm } = Astro.props;
+const w = 600, h = 140, pad = 24;
+const min = Math.min(...points), max = Math.max(...points);
+const range = Math.max(max - min, 1);
+const xy = points.map((p, i) => [pad + (i / (points.length - 1)) * (w - pad * 2), h - pad - ((p - min) / range) * (h - pad * 2)]);
+const line = xy.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+const area = `${line} L${w - pad} ${h - pad} L${pad} ${h - pad} Z`;
+---
+{points.length > 1 && (
+  <figure class="elev">
+    <svg viewBox={`0 0 ${w} ${h}`} role="img" aria-label={`Elevation profile from ${points[0]} m to ${points.at(-1)} m, highest point ${max} m`}>
+      <line x1={pad} x2={w - pad} y1={h - pad} y2={h - pad} stroke="var(--line)" />
+      <path d={area} fill="var(--lake)" opacity="0.18" />
+      <path d={line} fill="none" stroke="var(--marker)" stroke-width="3" stroke-linejoin="round" />
+      <text x={pad} y={14} fill="var(--muted)" font-size="12">{max} m</text>
+      <text x={pad} y={h - 6} fill="var(--muted)" font-size="12">Start</text>
+      <text x={w - pad} y={h - 6} fill="var(--muted)" font-size="12" text-anchor="end">{distanceKm ? `${distanceKm} km` : 'Finish'}</text>
+    </svg>
+    <figcaption>Elevation along the route</figcaption>
+  </figure>
+)}
+<style>
+  .elev { margin: 0; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 14px; }
+  svg { width: 100%; height: auto; font-family: var(--body); }
+  figcaption { font-size: var(--step--1); color: var(--muted); }
+</style>

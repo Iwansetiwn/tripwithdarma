@@ -1,0 +1,22 @@
+---
+import WhatsAppButton from './WhatsAppButton.astro';
+interface Props { message?: string; tour?: string; label?: string; priceLine?: string }
+const { message, tour, label = 'Book on WhatsApp', priceLine } = Astro.props;
+---
+<div class="sticky-wa">
+  {priceLine && <span class="price">{priceLine}</span>}
+  <WhatsAppButton placement="sticky" message={message} tour={tour} label={label} class="sticky-btn" />
+</div>
+<style>
+  .sticky-wa {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 30; display: none; align-items: center; gap: 12px;
+    background: var(--paper); border-top: 1px solid var(--line); box-shadow: 0 -6px 18px rgb(21 27 23 / 0.08);
+    padding: 10px max(16px, env(safe-area-inset-right, 0px)) calc(10px + env(safe-area-inset-bottom, 0px)) max(16px, env(safe-area-inset-left, 0px));
+  }
+  .price { font: 700 1.1rem/1.1 var(--display); text-transform: uppercase; color: var(--canopy); flex: 1 1 auto; min-width: 0; }
+  .sticky-wa :global(.sticky-btn) { flex: 1 1 auto; }
+  @media (max-width: 760px) {
+    .sticky-wa { display: flex; }
+    :global(body) { --sticky-h: calc(70px + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>

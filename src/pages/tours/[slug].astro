@@ -1,0 +1,182 @@
+---
+import type { GetStaticPaths } from 'astro';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import Contours from '../../components/Contours.astro';
+import FactRow from '../../components/FactRow.astro';
+import Photo from '../../components/Photo.astro';
+import Timeline from '../../components/Timeline.astro';
+import ElevationProfile from '../../components/ElevationProfile.astro';
+import BookingCard from '../../components/BookingCard.astro';
+import Reviews from '../../components/Reviews.astro';
+import TourCard from '../../components/TourCard.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import Icon from '../../components/Icon.astro';
+import { getTours, getSite, getGuide, bookingMessage, formatPrice } from '../../lib/site';
+import { breadcrumbSchema, businessSchema, tourSchema, graph } from '../../lib/schema';
+import { ogImageUrl } from '../../lib/og';
+
+export const getStaticPaths = (async () => {
+  const tours = await getTours();
+  return tours.map((tour) => ({ params: { slug: tour.id }, props: { tour } }));
+}) satisfies GetStaticPaths;
+
+const { tour } = Astro.props;
+const d = tour.data;
+const { Content } = await render(tour);
+const site = await getSite();
+const guide = await getGuide();
+const others = (await getTours()).filter((t) => t.id !== tour.id).slice(0, 2);
+const url = new URL(`/tours/${tour.id}/`, Astro.site).href;
+const og = await ogImageUrl(d.cover);
+const message = bookingMessage(d.title);
+const price = formatPrice(d.price, d.priceCurrency);
+const schema = graph(
+  tourSchema(tour, url, og),
+  businessSchema(site, guide, Astro.site!),
+  breadcrumbSchema([
+    { name: 'Home', url: Astro.site!.href },
+    { name: 'Hikes', url: new URL('/tours/', Astro.site).href },
+    { name: d.shortTitle ?? d.title, url },
+  ]),
+);
+---
+<Base
+  title={d.metaTitle ?? `${d.title} | Trip with Darma`}
+  description={d.metaDescription}
+  image={og}
+  imageAlt={d.coverAlt}
+  schema={schema}
+  sticky={{ message, tour: d.title, priceLine: price ? `${price}` : d.duration }}
+>
+  <section class="page-hero">
+    <Contours opacity={0.14} />
+    <div class="container inner tour-hero">
+      <div class="hero-text">
+        <Breadcrumbs items={[{ name: 'Home', href: '/' }, { name: 'Hikes', href: '/tours/' }, { name: d.shortTitle ?? d.title }]} inverted />
+        <h1>{d.title}</h1>
+        <p>{d.summary}</p>
+        <FactRow tour={d} large />
+        <div><WhatsAppButton placement="tour-hero" tour={d.title} message={message} /></div>
+      </div>
+      <div class="hero-cover"><Photo src={d.cover} alt={d.coverAlt ?? ''} eager sizes="(max-width: 860px) 100vw, 520px" aspect="4 / 3" widths={[480, 720, 1040]} /></div>
+    </div>
+  </section>
+
+  <div class="container layout section">
+    <div class="main">
+      {d.highlights.length > 0 && (
+        <section aria-labelledby="highlights">
+          <h2 id="highlights">Highlights</h2>
+          <ul class="ticks">
+            {d.highlights.map((h) => <li><Icon name="check" size={20} />{h}</li>)}
+          </ul>
+        </section>
+      )}
+
+      <section class="prose" aria-label="About this hike">
+        <Content />
+      </section>
+
+      {d.itinerary.length > 0 && (
+        <section aria-labelledby="itinerary">
+          <h2 id="itinerary">Itinerary</h2>
+          <p class="note">Times are a guide. Ketut adjusts the pace to your group and the weather.</p>
+          <Timeline steps={d.itinerary} />
+        </section>
+      )}
+
+      {d.elevationProfile.length > 1 && <ElevationProfile points={d.elevationProfile} distanceKm={d.distanceKm} />}
+
+      {(d.included.length > 0 || d.notIncluded.length > 0) && (
+        <section aria-labelledby="included" class="incl">
+          <h2 id="included" class="visually-hidden">What's included</h2>
+          <div>
+            <h3>Included</h3>
+            <ul class="ticks">{d.included.map((i) => <li><Icon name="check" size={20} />{i}</li>)}</ul>
+          </div>
+          <div>
+            <h3>Not included</h3>
+            <ul class="ticks no">{d.notIncluded.map((i) => <li><Icon name="x" size={20} />{i}</li>)}</ul>
+          </div>
+        </section>
+      )}
+
+      {d.whatToBring.length > 0 && (
+        <section aria-labelledby="bring">
+          <h2 id="bring">What to bring</h2>
+          <ul class="ticks bring">{d.whatToBring.map((i) => <li><Icon name="pack" size={20} />{i}</li>)}</ul>
+        </section>
+      )}
+
+      {(d.pickup || d.meetingPoint) && (
+        <section aria-labelledby="pickup">
+          <h2 id="pickup">Pickup &amp; meeting point</h2>
+          {d.meetingPoint && <p><strong>Meeting point:</strong> {d.meetingPoint}</p>}
+          {d.pickup && <p>{d.pickup}</p>}
+        </section>
+      )}
+
+      <section aria-labelledby="gallery">
+        <h2 id="gallery">Photos</h2>
+        {d.gallery.length > 0 ? (
+          <ul class="gallery">
+            {d.gallery.map((g) => <li><Photo src={g.image} alt={g.alt} sizes="(max-width: 760px) 50vw, 260px" aspect="1 / 1" widths={[320, 520, 720]} /></li>)}
+          </ul>
+        ) : (
+          <ul class="gallery">
+            {[1, 2, 3].map(() => <li><Photo sizes="260px" aspect="1 / 1" /></li>)}
+          </ul>
+        )}
+      </section>
+    </div>
+
+    <div class="side">
+      <BookingCard tour={tour} />
+    </div>
+  </div>
+
+  <section class="section band">
+    <div class="container">
+      <div class="section-head"><p class="eyebrow">Reviews</p><h2>From hikers like you</h2></div>
+      <Reviews tour={tour.id} limit={3} />
+    </div>
+  </section>
+
+  {others.length > 0 && (
+    <section class="section">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">More hikes</p><h2>Other hikes in Munduk</h2></div>
+        <div class="grid-cards">{others.map((t) => <TourCard tour={t} />)}</div>
+      </div>
+    </section>
+  )}
+</Base>
+<style>
+  .tour-hero { grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr); align-items: center; gap: 40px; }
+  .hero-text { display: grid; gap: 16px; }
+  .layout { display: grid; grid-template-columns: minmax(0, 1fr) 360px; gap: 48px; align-items: start; }
+  .main { display: grid; gap: 44px; min-width: 0; }
+  .main h2 { font-size: var(--step-2); margin-bottom: 14px; }
+  .main h3 { font-size: 1.4rem; text-transform: uppercase; color: var(--canopy); margin-bottom: 10px; }
+  .side { position: sticky; top: 16px; }
+  .ticks { list-style: none; display: grid; gap: 10px; }
+  .ticks li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .ticks :global(svg) { color: var(--lake); margin-top: 3px; }
+  .ticks.no :global(svg) { color: var(--marker); }
+  .bring { grid-template-columns: repeat(auto-fill, minmax(min(100%, 240px), 1fr)); }
+  .incl { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 22px; }
+  .note { color: var(--muted); margin-bottom: 18px; font-size: var(--step--1); }
+  .gallery { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+  .band { background: var(--paper); border-block: 1px solid var(--line); }
+  @media (max-width: 960px) {
+    .layout { grid-template-columns: 1fr; }
+    .side { position: static; }
+  }
+  @media (max-width: 860px) {
+    .tour-hero { grid-template-columns: 1fr; }
+    .hero-cover:has(:global(.placeholder)) { display: none; }
+  }
+  @media (max-width: 560px) { .incl { grid-template-columns: 1fr; } .gallery { grid-template-columns: 1fr 1fr; } }
+</style>

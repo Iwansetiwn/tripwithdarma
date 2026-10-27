@@ -1,0 +1,242 @@
+# Pages CMS configuration (https://pagescms.org). Ketut edits the site at https://app.pagescms.org
+# Photos upload to src/assets/images and are optimised (AVIF/WebP, several sizes) when the site builds.
+media:
+  input: src/assets/images
+  output: /images
+
+content:
+  # ───────────────────────── Hikes ─────────────────────────
+  - name: tours
+    label: Hikes / Tours
+    type: collection
+    path: src/content/tours
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, difficulty, price, draft]
+      sort: order
+    fields:
+      - { name: title, label: Hike name, type: string, required: true }
+      - { name: shortTitle, label: Short name (for cards and menus), type: string }
+      - name: draft
+        label: Hidden (draft)
+        description: Turn on to hide this hike from the website.
+        type: boolean
+        default: false
+      - { name: featured, label: Show on homepage, type: boolean, default: true }
+      - { name: order, label: Order on the page (1 = first), type: number, default: 10 }
+      - { name: summary, label: Card summary (1 sentence), type: text, required: true }
+      - name: price
+        label: Price (numbers only, e.g. 450000). Leave empty to show "Price on WhatsApp"
+        type: number
+      - name: priceCurrency
+        label: Currency
+        type: select
+        default: IDR
+        options: { values: [IDR, USD] }
+      - { name: priceUnit, label: "Price is… (e.g. per person, per group of up to 4)", type: string, default: per person }
+      - { name: duration, label: "Duration (e.g. About 4 hours)", type: string, required: true }
+      - { name: durationHours, label: Duration in hours (number), type: number }
+      - { name: distanceKm, label: Distance in km, type: number }
+      - { name: elevationGainM, label: Total climb in metres, type: number }
+      - { name: highestPointM, label: Highest point in metres, type: number }
+      - name: difficulty
+        label: Difficulty
+        type: select
+        default: Moderate
+        options: { values: [Easy, Moderate, Challenging] }
+      - { name: groupSize, label: "Group size (e.g. Private, 1–6 people)", type: string }
+      - { name: startTime, label: "Usual start time (e.g. 08:00)", type: string }
+      - { name: meetingPoint, label: Meeting point, type: string }
+      - { name: pickup, label: Pickup information, type: text }
+      - { name: cover, label: Main photo, type: image }
+      - { name: coverAlt, label: Main photo description (for Google and blind visitors), type: string }
+      - name: gallery
+        label: Photo gallery
+        type: object
+        list: true
+        fields:
+          - { name: image, label: Photo, type: image }
+          - { name: alt, label: What is in the photo?, type: string }
+      - { name: highlights, label: Highlights, type: string, list: true }
+      - name: itinerary
+        label: Itinerary (timeline)
+        type: object
+        list: true
+        fields:
+          - { name: time, label: "Time (e.g. 08:00)", type: string }
+          - { name: title, label: Step title, type: string }
+          - { name: text, label: Description, type: text }
+      - { name: included, label: Included, type: string, list: true }
+      - { name: notIncluded, label: Not included, type: string, list: true }
+      - { name: whatToBring, label: What to bring, type: string, list: true }
+      - name: elevationProfile
+        label: Elevation profile (metres along the route, start to finish, e.g. 1210, 1260, 1350, 1220)
+        type: number
+        list: true
+      - { name: metaTitle, label: "Google title (max ~60 characters)", type: string }
+      - { name: metaDescription, label: "Google description (max ~155 characters)", type: text, required: true }
+      - { name: primaryKeyword, label: Main search keyword, type: string }
+      - { name: body, label: Full description, type: rich-text }
+
+  # ───────────────────────── Blog ─────────────────────────
+  - name: blog
+    label: Blog / Guides
+    type: collection
+    path: src/content/blog
+    format: yaml-frontmatter
+    filename: "{primary}.md"
+    view:
+      primary: title
+      fields: [title, date, draft]
+      sort: date
+      order: desc
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: description, label: "Short description (shown on Google, max ~155 characters)", type: text, required: true }
+      - name: date
+        label: Publish date
+        type: date
+        options: { format: yyyy-MM-dd }
+      - name: updated
+        label: Last updated (optional)
+        type: date
+        default: ""
+        options: { format: yyyy-MM-dd }
+      - name: draft
+        label: Hidden (draft)
+        description: Turn off to publish.
+        type: boolean
+        default: true
+      - { name: cover, label: Cover photo, type: image }
+      - { name: coverAlt, label: Cover photo description, type: string }
+      - { name: metaTitle, label: Google title (optional), type: string }
+      - { name: primaryKeyword, label: Main search keyword, type: string }
+      - name: relatedTours
+        label: Related hikes (file names, e.g. twin-lakes-forest-trek)
+        type: string
+        list: true
+      - { name: body, label: Article, type: rich-text }
+
+  # ───────────────────────── Reviews ─────────────────────────
+  - name: reviews
+    label: Reviews
+    type: file
+    path: src/content/settings/reviews.json
+    format: json
+    fields:
+      - { name: rating, label: Tripadvisor rating (e.g. 5.0), type: number }
+      - { name: reviewCount, label: Number of Tripadvisor reviews, type: number }
+      - name: reviews
+        label: Selected reviews (copy real Tripadvisor reviews only)
+        type: object
+        list: true
+        fields:
+          - { name: author, label: Reviewer name (as shown on Tripadvisor), type: string, required: true }
+          - { name: from, label: Where they're from, type: string }
+          - { name: date, label: "Date of review (e.g. March 2026)", type: string }
+          - { name: rating, label: Stars (1–5), type: number }
+          - { name: title, label: Review title, type: string }
+          - { name: text, label: Review text (copy exactly; you may shorten with …), type: text, required: true }
+          - { name: url, label: Link to the review on Tripadvisor, type: string }
+          - { name: tour, label: "Hike file name (optional, shows it on that hike page)", type: string }
+          - { name: featured, label: Show on homepage, type: boolean, default: true }
+      - name: widgetCode
+        label: Tripadvisor widget code (optional, from Tripadvisor's Widget Center; loads only on the Reviews page)
+        type: code
+
+  # ───────────────────────── FAQ ─────────────────────────
+  - name: faq
+    label: FAQ
+    type: file
+    path: src/content/settings/faq.json
+    format: json
+    fields:
+      - name: items
+        label: Questions
+        type: object
+        list: true
+        fields:
+          - { name: question, label: Question, type: string, required: true }
+          - { name: answer, label: Answer, type: text, required: true }
+          - name: category
+            label: Topic
+            type: select
+            options: { values: [Booking, Weather, Fitness, What to wear, Cancellations, Pickup & meeting point] }
+          - { name: onHome, label: Show on homepage, type: boolean, default: false }
+
+  # ───────────────────────── About Ketut ─────────────────────────
+  - name: guide
+    label: About Ketut
+    type: file
+    path: src/content/settings/guide.json
+    format: json
+    fields:
+      - { name: name, label: Name, type: string, required: true }
+      - { name: role, label: Title line, type: string }
+      - { name: photo, label: Portrait photo, type: image }
+      - { name: photoAlt, label: Photo description, type: string }
+      - { name: shortIntro, label: Short introduction (2–3 sentences), type: text }
+      - { name: story, label: "Full story (leave an empty line between paragraphs)", type: text }
+      - { name: yearsGuiding, label: Years guiding, type: number }
+      - { name: homeVillage, label: Home village, type: string }
+      - { name: languages, label: Languages, type: string, list: true }
+      - { name: certifications, label: Licences & certificates, type: string, list: true }
+      - { name: promises, label: Promises to guests, type: string, list: true }
+
+  # ───────────────────────── Site settings ─────────────────────────
+  - name: site
+    label: Site settings & contact
+    type: file
+    path: src/content/settings/site.json
+    format: json
+    fields:
+      - { name: businessName, label: Business name, type: string }
+      - { name: guideName, label: Guide name, type: string }
+      - { name: tagline, label: Tagline, type: string }
+      - name: whatsapp
+        label: WhatsApp number (international, digits only, e.g. 6281234567890)
+        type: string
+      - { name: phoneDisplay, label: "Phone as shown on the site (e.g. +62 812-3456-7890)", type: string }
+      - { name: email, label: Email (optional), type: string }
+      - name: address
+        label: Address (must match Google Business Profile exactly)
+        type: object
+        fields:
+          - { name: street, label: Street / banjar, type: string }
+          - { name: village, label: Village, type: string }
+          - { name: district, label: District (kecamatan), type: string }
+          - { name: regency, label: Regency (kabupaten), type: string }
+          - { name: province, label: Province, type: string }
+          - { name: postalCode, label: Postal code, type: string }
+          - { name: country, label: Country code, type: string, default: ID }
+      - { name: latitude, label: Latitude (from Google Maps pin), type: number }
+      - { name: longitude, label: Longitude (from Google Maps pin), type: number }
+      - { name: serviceArea, label: Service area (villages/areas), type: string, list: true }
+      - { name: openingHours, label: "Opening hours (format: Mo-Su 07:00-18:00)", type: string }
+      - { name: mapQuery, label: Map search text (for the contact page map), type: string }
+      - { name: tripadvisorUrl, label: Tripadvisor page link, type: string }
+      - { name: googleBusinessUrl, label: Google Business Profile / Maps link, type: string }
+      - { name: instagramUrl, label: Instagram link, type: string }
+      - { name: facebookUrl, label: Facebook link, type: string }
+      - { name: defaultWhatsappMessage, label: Default WhatsApp message, type: text }
+      - { name: ga4Id, label: "Google Analytics 4 ID (G-XXXXXXX)", type: string }
+      - { name: googleSiteVerification, label: Google Search Console verification code, type: string }
+      - name: home
+        label: Homepage
+        type: object
+        fields:
+          - { name: heroHeadline, label: Big headline, type: string }
+          - { name: heroText, label: Text under the headline, type: text }
+          - { name: heroImage, label: Hero photo, type: image }
+          - { name: heroImageAlt, label: Hero photo description, type: string }
+          - { name: metaTitle, label: Google title, type: string }
+          - { name: metaDescription, label: Google description, type: text }
+          - name: whyChoose
+            label: Why choose Ketut (4 points)
+            type: object
+            list: true
+            fields:
+              - { name: title, label: Title, type: string }
+              - { name: text, label: Text, type: text }
