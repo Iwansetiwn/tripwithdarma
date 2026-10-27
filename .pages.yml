@@ -227,7 +227,7 @@ content:
         label: Homepage
         type: object
         fields:
-          - { name: heroHeadline, label: "Big headline (wrap words in *asterisks* to show them in italic)", type: string }
+          - { name: heroHeadline, label: "Big headline (wrap words in *asterisks* to highlight them in colour)", type: string }
           - { name: heroText, label: Text under the headline, type: text }
           - { name: heroImage, label: Hero photo, type: image }
           - { name: heroImageAlt, label: Hero photo description, type: string }

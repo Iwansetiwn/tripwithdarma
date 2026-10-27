@@ -3,12 +3,11 @@ interface Props { inverted?: boolean }
 const { inverted = false } = Astro.props;
 ---
 <span class:list={['logo', { inverted }]}>
-  <svg class="mark" width="40" height="40" viewBox="0 0 64 64" aria-hidden="true">
+  <svg class="mark" width="38" height="38" viewBox="0 0 64 64" aria-hidden="true">
     <rect width="64" height="64" rx="16" fill="#1F3D30" />
-    <path d="M6 44 21 26l8 9 9-14 20 23Z" fill="#4F6F52" />
-    <ellipse cx="22" cy="47" rx="9" ry="4" fill="#8DB8BB" />
-    <ellipse cx="42" cy="48" rx="10" ry="4.5" fill="#8DB8BB" />
-    <circle cx="46" cy="17" r="5" fill="#EFA58E" />
+    <path d="M10 42 25 19l8.5 11.5 6-6L54 42Z" fill="#F6F3EC" stroke="#F6F3EC" stroke-width="3" stroke-linejoin="round" />
+    <path d="M16 50.5h12M36 50.5h12" stroke="#8DB8BB" stroke-width="5" stroke-linecap="round" />
+    <circle cx="25" cy="19" r="4.5" fill="#EFA58E" />
   </svg>
   <span class="words">
     <span class="name">Trip with Darma</span>
@@ -16,11 +15,11 @@ const { inverted = false } = Astro.props;
   </span>
 </span>
 <style>
-  .logo { display: inline-flex; align-items: center; gap: 12px; color: var(--forest); }
+  .logo { display: inline-flex; align-items: center; gap: 11px; color: var(--forest); }
   .logo.inverted { color: #fff; }
   .inverted .mark rect { fill: #2a4a3b; }
-  .words { display: grid; line-height: 1; gap: 4px; }
-  .name { white-space: nowrap; font: 600 1.35rem/1 var(--serif); letter-spacing: -0.01em; }
-  .sub { font: 600 0.7rem/1 var(--body); text-transform: uppercase; letter-spacing: 0.16em; color: var(--muted); }
-  .inverted .sub { color: #b9c8bd; }
+  .words { display: grid; line-height: 1; gap: 5px; }
+  .name { white-space: nowrap; font: 800 1.15rem/1 var(--display); letter-spacing: -0.03em; }
+  .sub { font: 600 0.68rem/1 var(--body); letter-spacing: 0.02em; color: var(--muted); }
+  .inverted .sub { color: #a9bbaf; }
 </style>
