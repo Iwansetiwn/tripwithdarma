@@ -1,0 +1,12 @@
+// Cloudflare Workers deploy: a static-assets-only Worker serving the Astro build in dist/.
+// _redirects and _headers in public/ are copied into dist/ and applied by Cloudflare.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "tripwithdarma",
+  "compatibility_date": "2025-10-01",
+  "assets": {
+    "directory": "./dist",
+    "html_handling": "auto-trailing-slash",
+    "not_found_handling": "404-page"
+  }
+}
