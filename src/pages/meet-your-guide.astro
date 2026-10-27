@@ -6,7 +6,7 @@ import Photo from '../components/Photo.astro';
 import Icon from '../components/Icon.astro';
 import Reviews from '../components/Reviews.astro';
 import WhatsAppButton from '../components/WhatsAppButton.astro';
-import { getGuide, getSite } from '../lib/site';
+import { getGuide, getSite, hasReviews } from '../lib/site';
 import { breadcrumbSchema, personSchema, businessSchema, graph } from '../lib/schema';
 import { ogImageUrl } from '../lib/og';
 
@@ -64,12 +64,14 @@ const schema = graph(
     </div>
   </section>
 
-  <section class="section band">
-    <div class="container">
-      <div class="section-head"><p class="eyebrow">Reviews</p><h2>What hikers say about Ketut</h2></div>
-      <Reviews limit={6} />
-    </div>
-  </section>
+  {(await hasReviews()) && (
+    <section class="section band">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Reviews</p><h2>What hikers say about Ketut</h2></div>
+        <Reviews limit={6} />
+      </div>
+    </section>
+  )}
 </Base>
 <style>
   .about { display: grid; grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); gap: clamp(32px, 6vw, 88px); align-items: start; }

@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro';
+import WhatsAppButton from './WhatsAppButton.astro';
 import { getReviews, getSite } from '../lib/site';
 interface Props { limit?: number; tour?: string; showAllLink?: boolean }
 const { limit, tour, showAllLink = true } = Astro.props;
@@ -44,11 +45,17 @@ if (limit) list = list.slice(0, limit);
     </ul>
   ) : (
     <div class="empty">
-      <p>Reviews from Ketut's guests are on Tripadvisor.</p>
       {site.tripadvisorUrl ? (
-        <a class="btn btn-outline" href={site.tripadvisorUrl} target="_blank" rel="noopener">See reviews on Tripadvisor</a>
+        <>
+          <p>Reviews from Ketut's guests are on Tripadvisor.</p>
+          <a class="btn btn-outline" href={site.tripadvisorUrl} target="_blank" rel="noopener">See reviews on Tripadvisor</a>
+        </>
       ) : (
-        <p class="note">Selected Tripadvisor reviews will appear here.</p>
+        <>
+          <p>Want to hear from past guests?</p>
+          <p class="note">Ask Ketut on WhatsApp. He's happy to share photos and messages from recent hikes.</p>
+          <WhatsAppButton placement="reviews-empty" label="Ask Ketut on WhatsApp" />
+        </>
       )}
     </div>
   )}

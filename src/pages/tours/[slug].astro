@@ -14,7 +14,7 @@ import Reviews from '../../components/Reviews.astro';
 import TourCard from '../../components/TourCard.astro';
 import WhatsAppButton from '../../components/WhatsAppButton.astro';
 import Icon from '../../components/Icon.astro';
-import { getTours, getSite, getGuide, bookingMessage, formatPrice } from '../../lib/site';
+import { getTours, getSite, getGuide, bookingMessage, formatPrice, hasReviews } from '../../lib/site';
 import { breadcrumbSchema, businessSchema, tourSchema, graph } from '../../lib/schema';
 import { ogImageUrl } from '../../lib/og';
 
@@ -132,12 +132,14 @@ const schema = graph(
     </div>
   </div>
 
-  <section class="section band">
-    <div class="container">
-      <div class="section-head"><p class="eyebrow">Reviews</p><h2>From hikers like you</h2></div>
-      <Reviews tour={tour.id} limit={3} />
-    </div>
-  </section>
+  {(await hasReviews()) && (
+    <section class="section band">
+      <div class="container">
+        <div class="section-head"><p class="eyebrow">Reviews</p><h2>From hikers like you</h2></div>
+        <Reviews tour={tour.id} limit={3} />
+      </div>
+    </section>
+  )}
 
   {others.length > 0 && (
     <section class="section">

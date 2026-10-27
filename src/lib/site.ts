@@ -17,6 +17,12 @@ export async function getReviews() {
   return entry?.data ?? { reviews: [], rating: undefined, reviewCount: undefined, widgetCode: undefined };
 }
 
+/** True when there is something real to show in a reviews block: quoted reviews or a Tripadvisor link. */
+export async function hasReviews() {
+  const [data, site] = await Promise.all([getReviews(), getSite()]);
+  return data.reviews.length > 0 || Boolean(site.tripadvisorUrl);
+}
+
 export async function getFaq() {
   const entry = await getEntry('faq', 'faq');
   return entry?.data.items ?? [];
